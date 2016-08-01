@@ -1,2 +1,7 @@
+# IDEA
 .idea
 *.iml
+
+# generated
+__pycache__
+*.db

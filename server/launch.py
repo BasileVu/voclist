@@ -2,15 +2,20 @@
 
 import os
 
+from server.models import Base, Word
+from server.session import DB_FOLDER, engine, Session
+
 __author__ = "Basile Vu <basile.vu@gmail.com>"
 
-DB_FOLDER = "db"
+if __name__ == "__main__":
 
-
-def prepare_db_folder():
     if not os.path.exists(DB_FOLDER):
         os.makedirs(DB_FOLDER)
 
+    Base.metadata.create_all(engine, checkfirst=True)
 
-if __name__ == "__main__":
-    prepare_db_folder()
+    session = Session()
+    w = Word(value="test")
+    session.add(w)
+    session.commit()
+
