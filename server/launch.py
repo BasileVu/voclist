@@ -2,7 +2,7 @@
 
 import os
 
-from server.models import Base, Word
+from server.models import *
 from server.session import DB_FOLDER, engine, Session
 
 __author__ = "Basile Vu <basile.vu@gmail.com>"
@@ -15,7 +15,18 @@ if __name__ == "__main__":
     Base.metadata.create_all(engine, checkfirst=True)
 
     session = Session()
-    w = Word(value="test")
-    session.add(w)
-    session.commit()
+    e1 = Entry(value="test1", translation="t1")
+    e2 = Entry(value="test2", translation="t2")
+    tag1 = Tag(value="testing1")
+    tag2 = Tag(value="testing2")
+    e1.tags.append(tag1)
+    e1.tags.append(tag2)
+    e2.tags.append(tag1)
 
+    print("related to 'testing1': ")
+
+    for e in tag1.entries:
+        print(e.value)
+        print(" its tags are the following: ")
+        for t in e.tags:
+            print("  " + t.value)
