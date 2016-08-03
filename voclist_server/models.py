@@ -1,21 +1,11 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from voclist_server import db
 
 __author__ = "Basile Vu <basile.vu@gmail.com>"
-
-DB_FOLDER = "db"
-DB_NAME = "db.db"
-
-app = Flask(__name__)
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db/db.db"
-db = SQLAlchemy(app)
-
 
 entry_tag = db.Table("entry_tag",
                      db.Column("Entry_id", db.Integer, db.ForeignKey("entries.id")),
                      db.Column("Tag_id", db.Integer, db.ForeignKey("tags.id"))
-                 )
+                     )
 
 
 class EntrySet(db.Model):
@@ -35,7 +25,7 @@ class Entry(db.Model):
     translation = db.Column(db.String, nullable=False)
 
     entry_set = db.Column(db.Integer, db.ForeignKey('entry_set.id'))
-    tags = db.relationship("Tag", secondary=entry_tag, backref="entries")
+    tags = db.relationship("Tag", secondary=entry_tag, backref=db.backref("entries", lazy="dynamic"))
 
     def __repr__(self):
         return "<Entry(value='%s', translation='%s', entry_set='%s')>" % (self.value, self.translation, self.entry_set)
