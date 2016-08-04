@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Voc list</title>
+
+    <!-- Bootstrap -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h3>Entries for {{ entryset.name }}</h3>
-    <ul>
-    {% for entry in entries %}
-        <li>
-            {{ entry.value }} {{ entry.translation }}
-            {% for tag in entry.tags %}
+    <div class="container">
+        <h3>Entries for {{ entryset.name }}</h3>
+        <ul>
+            {% for entry in entries %}
+            <li>
+                {{ entry.value }} {{ entry.translation }}
+                {% for tag in entry.tags %}
                 #{{ tag.value }}
+                {% endfor %}
+            </li>
             {% endfor %}
-        </li>
-    {% endfor %}
-    </ul>
+        </ul>
+    </div>
 </body>
 </html>
