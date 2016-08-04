@@ -1,4 +1,4 @@
-from voclist_server import db
+from voclist import db
 
 __author__ = "Basile Vu <basile.vu@gmail.com>"
 

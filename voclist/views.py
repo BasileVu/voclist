@@ -1,7 +1,7 @@
 from flask import render_template
 
-from voclist_server import app
-from voclist_server.models import EntrySet, Entry, Tag
+from voclist import app
+from voclist.models import EntrySet, Entry, Tag
 
 
 @app.route("/")
