@@ -1,4 +1,5 @@
 from flask import render_template
+from flask import request
 
 from voclist import app
 from voclist.models import EntrySet, Entry, Tag
@@ -19,3 +20,10 @@ def hello():
     entries = [e1, e2]
 
     return render_template("index.html", entryset=l1, entries=entries)
+
+
+@app.route("/entry/", methods=["POST"])
+def create_entry():
+    value = request.form["value"]
+    translation = request.form["translation"]
+    return "created %s %s" % (value, translation)
