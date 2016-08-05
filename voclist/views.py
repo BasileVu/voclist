@@ -1,5 +1,4 @@
-from flask import render_template
-from flask import request
+from flask import redirect, render_template, request, url_for
 
 from voclist import app, db
 from voclist.models import Voclist, Entry, Tag
@@ -22,7 +21,7 @@ def create_voclist():
     db.session.add(voclist)
     db.session.commit()
 
-    return "created " + str(voclist)  # FIXME
+    return redirect("/entries/%s/" % str(voclist.id))  # FIXME url_for
 
 
 @app.route("/entries/<int:voclist_id>/", methods=["GET"])
@@ -47,4 +46,4 @@ def create_entry():
     db.session.add(entry)
     db.session.commit()
 
-    return "created"  # FIXME
+    return redirect("/entries/1")  # FIXME url_for + id
