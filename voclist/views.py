@@ -22,12 +22,12 @@ def create_voclist():
     db.session.add(voclist)
     db.session.commit()
 
-    return "created " + str(voclist)
+    return "created " + str(voclist)  # FIXME
 
 
-@app.route("/entries/", methods=["GET"])
-def entries():
-    voclist = Voclist.query.filter_by(language_left="jp").first()  # FIXME
+@app.route("/entries/<int:voclist_id>/", methods=["GET"])
+def entries(voclist_id):
+    voclist = Voclist.query.get(voclist_id)
     print(voclist)
     return render_template("entries.html", voclist=voclist)
 
@@ -47,4 +47,4 @@ def create_entry():
     db.session.add(entry)
     db.session.commit()
 
-    return "created"
+    return "created"  # FIXME
