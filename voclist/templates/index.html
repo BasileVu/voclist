@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="container">s
+    <div class="container">
         <h3>Select your voclist</h3>
 
         <div class="form-group">
             <select>
                 {% for voclist in voclists %}
-                    <option>{{ voclist.name }}</option>
+                    <option>{{ voclist }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -28,12 +28,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="lang-left">Language at the left:</label>
-                        <input type="text" class="form-control" id="lang-left" name="lang-left">
+                        <label for="language-left">Language at the left:</label>
+                        <input type="text" class="form-control" id="language-left" name="language-left">
                     </div>
                     <div class="form-group">
-                        <label for="lang-right">Language at the right:</label>
-                        <input type="text" class="form-control" id="lang-right" name="lang-right">
+                        <label for="language-right">Language at the right:</label>
+                        <input type="text" class="form-control" id="language-right" name="language-right">
                     </div>
                 </div>
                 <div class="modal-footer">

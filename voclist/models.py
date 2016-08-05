@@ -12,11 +12,16 @@ class Voclist(db.Model):
     __tablename__ = "voclists"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
+    language_left = db.Column(db.String, nullable=False)
+    language_right = db.Column(db.String, nullable=False)
+
     entries = db.relationship("Entry", backref="voclists", lazy="dynamic")
 
     def __repr__(self):
-        return "<EntrySet(name='%s')>" % self.name
+        return "<EntrySet(language_left='%s', language_right='%s')>" % (self.language_left, self.language_right)
+
+    def __str__(self):
+        return "%s - %s" % (self.language_left, self.language_right)
 
 
 class Entry(db.Model):

@@ -13,7 +13,8 @@ def index():
 @app.route("/voclists/", methods=["POST"])
 def create_voclist():
     voclist = Voclist(
-        name="%s-%s" % (request.form["lang-left"], request.form["lang-right"])
+        language_left = request.form["language-left"],
+        language_right = request.form["language-right"]
     )
 
     print(voclist)
@@ -21,12 +22,12 @@ def create_voclist():
     db.session.add(voclist)
     db.session.commit()
 
-    return "created" + voclist.name
+    return "created " + str(voclist)
 
 
 @app.route("/entries/", methods=["GET"])
 def entries():
-    voclist = Voclist.query.filter_by(name="jp-en").first()  # FIXME
+    voclist = Voclist.query.filter_by(language_left="jp").first()  # FIXME
     print(voclist)
     return render_template("entries.html", voclist=voclist)
 
