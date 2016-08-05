@@ -1,1 +1,47 @@
 {% extends "base.html" %}
+{% block content %}
+    <div class="container">s
+        <h3>Select your voclist</h3>
+
+        <div class="form-group">
+            <select>
+                {% for voclist in voclists %}
+                    <option>{{ voclist.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-voclist-modal">Add voclist</button>
+    </div>
+
+<!-- Modal to add entries -->
+<div class="modal fade" id="add-voclist-modal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <form id="add-voclist-form" action="/voclists/" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">New voclist</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="lang-left">Language at the left:</label>
+                        <input type="text" class="form-control" id="lang-left" name="lang-left">
+                    </div>
+                    <div class="form-group">
+                        <label for="lang-right">Language at the right:</label>
+                        <input type="text" class="form-control" id="lang-right" name="lang-right">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Ok</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
