@@ -1,5 +1,5 @@
 from voclist import app, db
-from voclist.models import EntrySet, Entry, Tag
+from voclist.models import Voclist, Entry, Tag
 
 __author__ = "Basile Vu <basile.vu@gmail.com>"
 
@@ -8,7 +8,7 @@ if __name__ == "__main__":
     db.create_all()
 
     # TODO remove when entry set creation ok
-    es = EntrySet(name="jp-en")
+    es = Voclist(name="jp-en")
     tag1 = Tag(value="testing1")
     tag2 = Tag(value="testing2")
 

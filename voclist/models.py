@@ -8,12 +8,12 @@ entry_tag = db.Table("entry_tag",
                      )
 
 
-class EntrySet(db.Model):
-    __tablename__ = "entry_sets"
+class Voclist(db.Model):
+    __tablename__ = "voclists"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    entries = db.relationship("Entry", backref="entry_sets", lazy="dynamic")
+    entries = db.relationship("Entry", backref="voclists", lazy="dynamic")
 
     def __repr__(self):
         return "<EntrySet(name='%s')>" % self.name
@@ -23,14 +23,14 @@ class Entry(db.Model):
     __tablename__ = "entries"
 
     id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String, nullable=False)
+    word = db.Column(db.String, nullable=False)
     translation = db.Column(db.String, nullable=False)
 
-    entry_set_id = db.Column(db.Integer, db.ForeignKey("entry_sets.id"))
+    voclist_id = db.Column(db.Integer, db.ForeignKey("voclists.id"))
     tags = db.relationship("Tag", secondary=entry_tag, backref=db.backref("entries", lazy="dynamic"))
 
     def __repr__(self):
-        return "<Entry(value='%s', translation='%s', entry_set_id='%s')>" % (self.value, self.translation, self.entry_set_id)
+        return "<Entry(word='%s', translation='%s', voclist_id='%s')>" % (self.word, self.translation, self.voclist_id)
 
 
 class Tag(db.Model):
