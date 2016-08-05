@@ -9,10 +9,10 @@ from voclist.models import EntrySet, Entry, Tag
 def index():
     entry_set = EntrySet.query.filter_by(name="jp-en").first()  # FIXME
     print(entry_set)
-    return render_template("index.html", entry_set=entry_set)
+    return render_template("entries.html", entry_set=entry_set)
 
 
-@app.route("/entry/", methods=["POST"])
+@app.route("/entries/", methods=["POST"])
 def create_entry():
     entry = Entry(
         value=request.form["value"],
