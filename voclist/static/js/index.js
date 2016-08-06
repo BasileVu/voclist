@@ -4,5 +4,5 @@ $('#voclist-ok-button').click(function () {
     // FIXME find selected item position o find id + change url accordingly
     var id = 1;
 
-    document.location.href = "/entries/" + id + "/";
+    document.location.href = "/voclist/" + id + "/";
 });
