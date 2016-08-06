@@ -11,12 +11,15 @@
 {% block content %}
     <div class="container">
         <h3>Select your voclist</h3>
-
-        <select id="voclist-selection" class="form-control">
-            {% for voclist in voclists %}
-                <option>{{ voclist }}</option>
-            {% endfor %}
-        </select>
+        {% if voclists %}
+            <select id="voclist-selection" class="form-control">
+                {% for voclist in voclists %}
+                    <option>{{ voclist }}</option>
+                {% endfor %}
+            </select>
+        {% else %}
+            <p>No voclist found yet. Please create one.</p>
+        {% endif %}
 
         <div id="buttons">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-voclist-modal">Add voclist</button>
