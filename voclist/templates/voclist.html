@@ -37,7 +37,7 @@
         <div class="modal-dialog">
 
             <!-- Modal content-->
-            <form id="add-entry-form" action="/entries/" method="post">
+            <form id="add-entry-form" action="/voclist/" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -52,6 +52,9 @@
                             <label for="translation">Translation:</label>
                             <input type="text" class="form-control" id="translation" name="translation">
                         </div>
+
+                        <!-- FIXME -->
+                        <input type="text" value="{{ voclist.id }}" name="voclist-id" style="display: none;">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -60,10 +63,5 @@
                 </div>
             </form>
         </div>
-    </div>
-
-    <!-- FIXME -->
-    <div id="voclist_id" style="display: none;">
-        {{ voclist.id }}
     </div>
 {% endblock %}

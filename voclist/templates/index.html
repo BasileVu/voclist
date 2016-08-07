@@ -14,7 +14,8 @@
         {% if voclists %}
             <select id="voclist-selection" class="form-control">
                 {% for voclist in voclists %}
-                    <option>{{ voclist }}</option>
+                    <!-- FIXME -->
+                    <option>[{{ voclist.id }}] {{ voclist }}</option>
                 {% endfor %}
             </select>
         {% else %}
@@ -25,13 +26,6 @@
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-voclist-modal">Add voclist</button>
             <button type="button" id="voclist-ok-button" class="btn btn-primary">Ok</button>
         </div>
-    </div>
-
-    <!-- FIXME -->
-    <div id="voclist-ids" style="display: none;">
-        {% for voclist in voclists %}
-            {{ voclist.id }}
-        {% endfor %}
     </div>
 
     <!-- Modal to add entries -->

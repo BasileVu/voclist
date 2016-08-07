@@ -42,7 +42,7 @@ def render_voclist(voclist_id):
 def create_entry():
     word = request.form["word"]
     translation = request.form["translation"]
-    voclist_id = 1  # FIXME
+    voclist_id = request.form["voclist-id"]
 
     if word == "" or translation == "":
         abort(401) # FIXME error code for invalid parameter or action
@@ -56,4 +56,4 @@ def create_entry():
     db.session.add(entry)
     db.session.commit()
 
-    return redirect("/voclist/%d/" % voclist_id)  # FIXME url_for
+    return redirect("/voclist/%s/" % voclist_id)  # FIXME url_for
