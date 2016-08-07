@@ -1,10 +1,36 @@
 {% extends "base.html" %}
+
+{% block headers %}
+    <link href="/static/css/voclist.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
     <div class="container">
-        <h3>Entries for {{ voclist }}</h3>
+        <div class="row">
+            <h3 class="col-md-6">Entries for {{ voclist }}</h3>
 
+            <div id="search" class="col-md-6">
+                <h3>Filter by</h3>
+
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="search-word" class="col-md-2">Word</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="search-word" name="word">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="search-tag" class="col-md-2">Tag</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="search-tag" name="tag">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ok</button>
+                </form>
+            </div>
+
+        </div>
         <table class="table">
-
             <thead>
                 <tr>
                     <th>#</th>
@@ -45,12 +71,12 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="word">Word:</label>
-                            <input type="text" class="form-control" id="word" name="word">
+                            <label for="modal-word">Word:</label>
+                            <input type="text" class="form-control" id="modal-word" name="word">
                         </div>
                         <div class="form-group">
-                            <label for="translation">Translation:</label>
-                            <input type="text" class="form-control" id="translation" name="translation">
+                            <label for="modal-translation">Translation:</label>
+                            <input type="text" class="form-control" id="modal-translation" name="translation">
                         </div>
 
                         <!-- FIXME -->

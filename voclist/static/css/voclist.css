@@ -1,0 +1,11 @@
+table td {
+    cursor: pointer;
+}
+
+table td:hover {
+    background-color: #eee;
+}
+
+#search h3 {
+    text-align: center;
+}
