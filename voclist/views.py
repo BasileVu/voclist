@@ -50,6 +50,7 @@ def render_voclist(voclist_id):
 def create_entry():
     word = request.form["word"]
     translation = request.form["translation"]
+    tags = request.form["tags"]
     voclist_id = request.form["voclist-id"]
 
     if word == "" or translation == "":
@@ -60,6 +61,18 @@ def create_entry():
         translation=translation,
         voclist_id=voclist_id
     )
+
+    tags = tags.split(',')
+
+    for tag_str in tags:
+        tag_str = tag_str.strip()
+        if tag_str != "":
+            tag = Tag.query.filter_by(value=tag_str).first()
+            if tag is None:
+                tag = Tag(value=tag_str)
+                db.session.add(tag)
+                db.session.commit()
+            entry.tags.append(tag)
 
     db.session.add(entry)
     db.session.commit()
