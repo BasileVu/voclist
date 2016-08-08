@@ -8,24 +8,26 @@
     <script type="text/javascript" src="/static/js/index.js"></script>
 {% endblock %}
 
-{% block content %}
-    <div class="container">
-        <h3>Select your voclist</h3>
-        {% if voclists %}
-            <select id="voclist-selection" class="form-control">
-                {% for voclist in voclists %}
-                    <!-- FIXME -->
-                    <option>[{{ voclist.id }}] {{ voclist }}</option>
-                {% endfor %}
-            </select>
-        {% else %}
-            <p>No voclist found yet. Please create one.</p>
-        {% endif %}
+{% block breadcrumb %}
+    <li class="active">Voclists</li>
+{% endblock %}
 
-        <div id="buttons">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-voclist-modal">Add voclist</button>
-            <button type="button" id="voclist-ok-button" class="btn btn-primary">Ok</button>
-        </div>
+{% block content %}
+    <h3>Select your voclist</h3>
+    {% if voclists %}
+        <select id="voclist-selection" class="form-control">
+            {% for voclist in voclists %}
+                <!-- FIXME -->
+                <option>[{{ voclist.id }}] {{ voclist }}</option>
+            {% endfor %}
+        </select>
+    {% else %}
+        <p>No voclist found yet. Please create one.</p>
+    {% endif %}
+
+    <div id="buttons">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-voclist-modal">Add voclist</button>
+        <button type="button" id="voclist-ok-button" class="btn btn-primary">Ok</button>
     </div>
 
     <!-- Modal to add entries -->
