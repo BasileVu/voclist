@@ -1,7 +1,7 @@
 from flask import abort, redirect, render_template, request, url_for
 
 from voclist import app, db
-from voclist.models import Voclist, Entry, Tag
+from voclist.models import Voclist, Entry, entry_tag, Tag
 
 
 @app.route("/")
@@ -28,6 +28,10 @@ def create_voclist():
     return redirect("/voclist/%d/" % voclist.id)  # FIXME url_for
 
 
+def filter_entries_by_tag(voclist, tag):
+    return voclist.entries.join(entry_tag).join(Tag).filter(Tag.value == tag)
+
+
 @app.route("/voclist/<int:voclist_id>/", methods=["GET"])
 def render_voclist(voclist_id):
     voclist = Voclist.query.get(voclist_id)
@@ -37,13 +41,24 @@ def render_voclist(voclist_id):
 
     entries = voclist.entries
 
-    word = request.args.get("word", None)
-    # TODO tag
-    if word is not None:
-        word = word.strip()
-        entries = voclist.entries.filter(Entry.word.contains(word))
+    word = request.args.get("word", "").strip()
+    tag = request.args.get("tag", "").strip()
 
-    return render_template("voclist.html", voclist=voclist, entries=entries, search_word=word)
+    if word != "":
+        if tag != "":
+            entries = filter_entries_by_tag(voclist, tag).filter(Entry.word.contains(word))
+        else:
+            entries = voclist.entries.filter(Entry.word.contains(word))
+    elif tag != "":
+        entries = filter_entries_by_tag(voclist, tag)
+
+    return render_template(
+        "voclist.html",
+        voclist=voclist,
+        entries=entries,
+        search_word=word,
+        search_tag=tag
+    )
 
 
 @app.route("/voclist/", methods=["POST"])

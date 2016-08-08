@@ -31,7 +31,8 @@
                 <div class="form-group">
                     <label for="search-tag" class="col-md-2">Tag</label>
                     <div class="col-md-10">
-                        <input type="text" class="form-control" id="search-tag" name="tag">
+                        <input type="text" class="form-control" id="search-tag" name="tag"
+                               {% if search_tag %} value="{{ search_tag }}" {% endif %}>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Ok</button>
