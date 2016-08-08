@@ -4,6 +4,10 @@
     <link href="/static/css/voclist.css" rel="stylesheet">
 {% endblock %}
 
+{% block scripts %}
+    <script type="text/javascript" src="/static/js/voclist.js"></script>
+{% endblock %}
+
 {% block content %}
     <div class="container">
         <div class="row">
@@ -38,11 +42,12 @@
                     <th>{{ voclist.language_left }}</th>
                     <th>{{ voclist.language_right }}</th>
                     <th>Tags</th>
+                    <th>Manage</th>
                 </tr>
             </thead>
                 <tbody>
                     {% for entry in entries %}
-                        <tr>
+                        <tr entry-id="{{ entry.id }}">
                             <th scope="row">{{ loop.index }}</th>
                             <td>{{ entry.word }}</td>
                             <td>{{ entry.translation }}</td>
@@ -51,6 +56,10 @@
                                     #{{ tag.value }}
                                 {% endfor %}
                             </td>
+                            <th>
+                                <button type="button" class="btn btn-primary">Edit</button>
+                                <button type="button" class="btn btn-primary">Delete</button>
+                            </th>
                         </tr>
                     {% endfor %}
             </tbody>

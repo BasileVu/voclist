@@ -9,3 +9,7 @@ table td:hover {
 #search h3 {
     text-align: center;
 }
+
+table .btn {
+    padding: 0px 4px;
+}
