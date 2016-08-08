@@ -15,10 +15,10 @@ def create_voclist():
     language_right = request.form["language-right"]
 
     if language_left == "" or language_right == "":
-        abort(401) # FIXME error code for invalid parameter or action
+        abort(401)  # FIXME error code for invalid parameter or action
 
     voclist = Voclist(
-        language_left=language_left ,
+        language_left=language_left,
         language_right=language_right
     )
 
@@ -35,7 +35,15 @@ def render_voclist(voclist_id):
     if voclist is None:
         abort(404)
 
-    return render_template("voclist.html", voclist=voclist)
+    entries = voclist.entries
+
+    word = request.args.get("word", "")
+    # TODO tag
+    if word != "":
+        print("test")
+        entries = voclist.entries.filter(Entry.word.contains(word))
+
+    return render_template("voclist.html", voclist=voclist, entries=entries)
 
 
 @app.route("/voclist/", methods=["POST"])
@@ -45,7 +53,7 @@ def create_entry():
     voclist_id = request.form["voclist-id"]
 
     if word == "" or translation == "":
-        abort(401) # FIXME error code for invalid parameter or action
+        abort(401)  # FIXME error code for invalid parameter or action
 
     entry = Entry(
         word=word,

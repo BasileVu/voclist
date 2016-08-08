@@ -2,10 +2,11 @@ from voclist import db
 
 __author__ = "Basile Vu <basile.vu@gmail.com>"
 
-entry_tag = db.Table("entry_tag",
-                     db.Column("Entry_id", db.Integer, db.ForeignKey("entries.id")),
-                     db.Column("Tag_id", db.Integer, db.ForeignKey("tags.id"))
-                     )
+entry_tag = db.Table(
+    "entry_tag",
+    db.Column("Entry_id", db.Integer, db.ForeignKey("entries.id")),
+    db.Column("Tag_id", db.Integer, db.ForeignKey("tags.id"))
+)
 
 
 class Voclist(db.Model):
