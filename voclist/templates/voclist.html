@@ -16,7 +16,8 @@
                     <div class="form-group">
                         <label for="search-word" class="col-md-2">Word</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" id="search-word" name="word">
+                            <input type="text" class="form-control" id="search-word" name="word"
+                                   {% if search_word %} value="{{ search_word }}" {% endif %}>
                         </div>
                     </div>
                     <div class="form-group">

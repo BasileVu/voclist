@@ -1,4 +1,4 @@
-from flask import abort,    redirect, render_template, request, url_for
+from flask import abort, redirect, render_template, request, url_for
 
 from voclist import app, db
 from voclist.models import Voclist, Entry, Tag
@@ -37,13 +37,13 @@ def render_voclist(voclist_id):
 
     entries = voclist.entries
 
-    word = request.args.get("word", "")
+    word = request.args.get("word", None)
     # TODO tag
-    if word != "":
-        print("test")
+    if word is not None:
+        word = word.strip()
         entries = voclist.entries.filter(Entry.word.contains(word))
 
-    return render_template("voclist.html", voclist=voclist, entries=entries)
+    return render_template("voclist.html", voclist=voclist, entries=entries, search_word=word)
 
 
 @app.route("/voclist/", methods=["POST"])
