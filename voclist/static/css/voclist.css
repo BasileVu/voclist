@@ -1,3 +1,7 @@
+table {
+    margin-top: 20px;
+}
+
 table td {
     cursor: pointer;
 }
@@ -12,4 +16,8 @@ table td:hover {
 
 table .btn {
     padding: 0px 4px;
+}
+
+.manage {
+    width: 10%;
 }
