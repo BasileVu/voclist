@@ -13,22 +13,26 @@
 {% endblock %}
 
 {% block content %}
-    <h3>Select your voclist</h3>
-    {% if voclists %}
-        <select id="voclist-selection" class="form-control">
-            {% for voclist in voclists %}
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <h3>Select your voclist</h3>
+        {% if voclists %}
+            <select id="voclist-selection" class="form-control">
+                {% for voclist in voclists %}
                 <!-- FIXME -->
                 <option>[{{ voclist.id }}] {{ voclist }}</option>
-            {% endfor %}
-        </select>
-    {% else %}
-        <p>No voclist found yet. Please create one.</p>
-    {% endif %}
+                {% endfor %}
+            </select>
+        {% else %}
+            <p>No voclist found yet. Please create one.</p>
+        {% endif %}
 
-    <div id="buttons">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-voclist-modal">Add voclist</button>
-        <button type="button" id="voclist-ok-button" class="btn btn-primary">Ok</button>
+        <div id="buttons">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-voclist-modal">Add voclist</button>
+            <button type="button" id="voclist-ok-button" class="btn btn-primary">Ok</button>
+        </div>
     </div>
+    <div class="col-md-2"></div>
 
     <!-- Modal to add entries -->
     <div class="modal fade" id="add-voclist-modal" role="dialog">

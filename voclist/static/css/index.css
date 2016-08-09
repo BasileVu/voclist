@@ -1,3 +1,7 @@
-#buttons {
-    margin-top: 10px;
+h3 {
+    text-align: center;
+}
+
+select {
+    margin: 20px 0px;
 }
