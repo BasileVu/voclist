@@ -104,8 +104,8 @@ def create_entry():
     return redirect("/voclist/%s/" % voclist_id)  # FIXME url_for
 
 
-@app.route("/voclist/<int:voclist_id>/", methods=["UPDATE"])
-def update_entry(voclist_id):
+@app.route("/entries/", methods=["UPDATE"])
+def update_entry():
     json = request.get_json()
     entry = Entry.query.get(int(json["id"]))
     tags = json.get("tags", "").split(",")
