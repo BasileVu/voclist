@@ -61,23 +61,13 @@ def render_voclist(voclist_id):
     )
 
 
-@app.route("/voclist/", methods=["POST"])
-def create_entry():
-    word = request.form["word"]
-    translation = request.form["translation"]
-    tags = request.form["tags"]
-    voclist_id = request.form["voclist-id"]
+def add_tags(entry, tags):
+    """
+    Adds tags to an entry, creating them if they don't exist.
 
-    if word == "" or translation == "":
-        abort(401)  # FIXME error code for invalid parameter or action
-
-    entry = Entry(
-        word=word,
-        translation=translation,
-        voclist_id=voclist_id
-    )
-
-    tags = tags.split(',')
+    :param entry: the entry to which the tags will be added.
+    :param tags: the tags to add. A list of strings.
+    """
 
     for tag_str in tags:
         tag_str = tag_str.strip()
@@ -89,15 +79,53 @@ def create_entry():
                 db.session.commit()
             entry.tags.append(tag)
 
+
+@app.route("/voclist/", methods=["POST"])
+def create_entry():
+    word = request.form["word"]
+    translation = request.form["translation"]
+    tags = request.form["tags"].split(",")
+    voclist_id = request.form["voclist-id"]
+
+    if word == "" or translation == "":
+        abort(401)  # FIXME error code for invalid parameter or action
+
+    entry = Entry(
+        word=word,
+        translation=translation,
+        voclist_id=voclist_id
+    )
+
+    add_tags(entry, tags)
+
     db.session.add(entry)
     db.session.commit()
 
     return redirect("/voclist/%s/" % voclist_id)  # FIXME url_for
 
 
+@app.route("/voclist/<int:voclist_id>/", methods=["UPDATE"])
+def update_entry(voclist_id):
+    json = request.get_json()
+    entry = Entry.query.get(int(json["id"]))
+    tags = json.get("tags", "").split(",")
+
+    entry.word = json["word"]
+    entry.translation = json["translation"]
+
+    entry.tags.clear()
+    # FIXME check tags to remove
+    add_tags(entry, tags)
+
+    db.session.commit()
+
+    return ""
+
+
 @app.route("/voclist/<int:voclist_id>/", methods=["DELETE"])
 def delete_entry(voclist_id):
     db.session.delete(Entry.query.get(int(request.get_json()["id"])))
     db.session.commit()
+    # FIXME check tags to remove
 
     return ""
