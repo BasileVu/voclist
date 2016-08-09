@@ -68,7 +68,7 @@
                         </td>
                         <th>
                             <button type="button" class="btn btn-primary">Edit</button>
-                            <button type="button" class="btn btn-primary">Delete</button>
+                            <button type="button" class="btn btn-primary delete-button">Delete</button>
                         </th>
                     </tr>
                 {% endfor %}
@@ -104,7 +104,7 @@
                     </div>
 
                     <!-- FIXME -->
-                    <input type="text" value="{{ voclist.id }}" name="voclist-id" style="display: none;">
+                    <input id="voclist-id" type="text" value="{{ voclist.id }}" name="voclist-id" style="display: none;">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

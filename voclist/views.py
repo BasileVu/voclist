@@ -93,3 +93,11 @@ def create_entry():
     db.session.commit()
 
     return redirect("/voclist/%s/" % voclist_id)  # FIXME url_for
+
+
+@app.route("/voclist/<int:voclist_id>/", methods=["DELETE"])
+def delete_entry(voclist_id):
+    db.session.delete(Entry.query.get(int(request.get_json()["id"])))
+    db.session.commit()
+
+    return ""
