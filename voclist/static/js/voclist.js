@@ -1,5 +1,5 @@
 $('td, .edit-button').click(function () {
-    var tr = $(this).parent();
+    var tr = $(this).parents('tr');
     var modal = $('#update-entry-modal');
 
     modal.find('.modal-title').text("Update " + tr.children("td").first().text());
@@ -23,7 +23,14 @@ $('td, .edit-button').click(function () {
                 "word": modal.find('#update-modal-word').val(),
                 "translation": modal.find('#update-modal-translation').val(),
                 "tags": modal.find('#update-modal-tags').val()
-            })
+            }),
+            success: function () {
+                document.location.reload();
+            },
+            error: function () {
+                // FIXME
+                document.location.reload();
+            }
         });
     })
     modal.modal("show");
@@ -40,7 +47,14 @@ $('.delete-button').click(function () {
             contentType: "application/json",
             data: JSON.stringify({
                 id: tr.attr("entry-id")
-            })
+            }),
+            success: function () {
+                document.location.reload();
+            },
+            error: function () {
+                // FIXME
+                document.location.reload();
+            }
         });
     }
 });
