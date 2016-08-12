@@ -1,4 +1,4 @@
-$('td, .edit-button').click(function () {
+$('.edit-button').click(function () {
     var tr = $(this).parents('tr');
     var modal = $('#update-entry-modal');
 
@@ -56,4 +56,8 @@ $('.delete-button').click(function () {
             }
         });
     }
+});
+
+$('span[class="label"]').click(function () {
+    window.location.search = "?tag=" + $(this).text().trim();
 });

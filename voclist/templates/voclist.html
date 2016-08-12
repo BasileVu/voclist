@@ -17,8 +17,9 @@
     <div class="row">
         <div class="col-md-6">
             <h3>Entries for {{ voclist }}</h3>
+
             <p>
-                Click on the values in the table to edit them.
+                Click on a tag to search entries related to this tag.
             </p>
         </div>
 
@@ -63,7 +64,9 @@
                         <td>{{ entry.translation }}</td>
                         <td>
                             {% for tag in entry.tags %}
-                                <span class="label" style="background-color: #{{ gen_color(tag.id, 3) }}">{{ tag.value }}</span>
+                                <span class="label"
+                                      style="background-color: #{{ gen_color(tag.id, 3) }}"
+                                >{{ tag.value }}</span>
                             {% endfor %}
                         </td>
                         <th>

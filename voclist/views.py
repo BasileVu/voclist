@@ -45,12 +45,13 @@ def gen_color(n, step=1):
     """
     Generates an hex color as string in the form #xyz.
     """
+    MAX_VALUE = 4096
 
-    res = (n * step) % 4096
+    res = (n * step) % MAX_VALUE
     hres = hex(res)
 
     while hres in ban_list:
-        res = (res + 1) % 4096
+        res = (res + 1) % MAX_VALUE
         hres = hex(res)
 
     return hres.lstrip("0x").rjust(3, "0")
