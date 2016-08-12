@@ -6,13 +6,12 @@ $('td, .edit-button').click(function () {
     modal.find('#update-modal-word').attr("value", tr.children("td:nth-child(2)").text());
     modal.find('#update-modal-translation').attr("value", tr.children("td:nth-child(3)").text());
 
-    var tags = tr.children("td:nth-child(4)").text();
+    var tags = []
+    tr.children("td:nth-child(4)").children("span").toArray().forEach(function (span) {
+        tags.push($(span).text().trim());
+    });
 
-    // FIXME
-    tags = tags.replace(/ /g, "");
-    tags = tags.replace("#", "");
-    tags = tags.replace(/#/g, ", ");
-    modal.find('#update-modal-tags').attr("value", tags);
+    modal.find('#update-modal-tags').attr("value", tags.join(", "));
 
     modal.find('#update-ok-button').click(function () {
         $.ajax("/entries/", {

@@ -63,7 +63,7 @@
                         <td>{{ entry.translation }}</td>
                         <td>
                             {% for tag in entry.tags %}
-                                #{{ tag.value }}
+                                <span class="label" style="background-color: #{{ gen_color(tag.id, 3) }}">{{ tag.value }}</span>
                             {% endfor %}
                         </td>
                         <th>

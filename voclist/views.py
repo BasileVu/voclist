@@ -31,6 +31,30 @@ def create_voclist():
 def filter_entries_by_tag(voclist, tag):
     return voclist.entries.join(entry_tag).join(Tag).filter(Tag.value == tag)
 
+# FIXME move
+ban_list = [
+    hex(x) + hex(y).strip("0x") + hex(z).strip("0x")
+    for x in range(16)
+    for y in range(16)
+    for z in range(16)
+    if x > 9 and y > 9 and z > 9
+]
+
+
+def gen_color(n, step=1):
+    """
+    Generates an hex color as string in the form #xyz.
+    """
+
+    res = (n * step) % 4096
+    hres = hex(res)
+
+    while hres in ban_list:
+        res = (res + 1) % 4096
+        hres = hex(res)
+
+    return hres.lstrip("0x").rjust(3, "0")
+
 
 @app.route("/voclist/<int:voclist_id>/", methods=["GET"])
 def render_voclist(voclist_id):
@@ -57,7 +81,8 @@ def render_voclist(voclist_id):
         voclist=voclist,
         entries=entries,
         search_word=word,
-        search_tag=tag
+        search_tag=tag,
+        gen_color=gen_color
     )
 
 
