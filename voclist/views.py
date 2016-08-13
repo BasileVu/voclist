@@ -31,6 +31,23 @@ def create_voclist():
     return redirect("/voclist/%d/" % voclist.id)  # FIXME url_for
 
 
+@app.route("/voclists/", methods=["DELETE"])
+def delete_voclist():
+
+    # FIXME on delete cascade
+    voclist = Voclist.query.get(int(request.get_json()["id"]))
+    for e in voclist.entries:
+        delete_entry(e.id)
+
+    db.session.delete(voclist)
+    db.session.commit()
+
+    for e in Entry.query.filter_by(word="lololol"):
+        print(e)
+
+    return ""
+
+
 def filter_entries_by_tag(voclist, tag):
     return voclist.entries.join(entry_tag).join(Tag).filter(Tag.value == tag)
 
@@ -108,10 +125,10 @@ def create_entry():
     return redirect("/voclist/%s/" % voclist_id)  # FIXME url_for
 
 
-@app.route("/entries/", methods=["UPDATE"])
-def update_entry():
+@app.route("/entry/<int:entry_id>/", methods=["UPDATE"])
+def update_entry(entry_id):
     json = request.get_json()
-    entry = Entry.query.get(int(json["id"]))
+    entry = Entry.query.get(entry_id)
     tags = json.get("tags", "").split(",")
 
     entry.word = json["word"]
@@ -126,10 +143,12 @@ def update_entry():
     return ""
 
 
-@app.route("/voclist/<int:voclist_id>/", methods=["DELETE"])
-def delete_entry(voclist_id):
-    db.session.delete(Entry.query.get(int(request.get_json()["id"])))
+@app.route("/entry/<int:entry_id>/", methods=["DELETE"])
+def delete_entry(entry_id):
+    db.session.delete(Entry.query.get(entry_id))
     db.session.commit()
+
     # FIXME check tags to remove
+    # FIXME check if on non-referenced delete exits
 
     return ""

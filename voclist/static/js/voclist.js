@@ -14,11 +14,10 @@ $('.edit-button').click(function () {
     modal.find('#update-modal-tags').attr("value", tags.join(", "));
 
     modal.find('#update-ok-button').click(function () {
-        $.ajax("/entries/", {
+        $.ajax("/entry/" + tr.attr("entry-id") + "/", {
             type: "UPDATE",
             contentType: "application/json",
             data: JSON.stringify({
-                "id": tr.attr("entry-id"),
                 "word": modal.find('#update-modal-word').val(),
                 "translation": modal.find('#update-modal-translation').val(),
                 "tags": modal.find('#update-modal-tags').val()
@@ -41,12 +40,8 @@ $('.delete-button').click(function () {
     // FIXME
     var resp = prompt("Delete '" + tr.children("td").first().text() + "' ? Type 'YES' if you are sure.")
     if (resp === "YES") {
-        $.ajax("/voclist/" + $('#voclist-id').attr("value") + "/", {
+        $.ajax("/entry/" + tr.attr("entry-id") + "/", {
             type: "DELETE",
-            contentType: "application/json",
-            data: JSON.stringify({
-                id: tr.attr("entry-id")
-            }),
             success: function () {
                 document.location.reload();
             },
