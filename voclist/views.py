@@ -31,6 +31,16 @@ def create_voclist():
     return redirect("/voclist/%d/" % voclist.id)  # FIXME url_for
 
 
+@app.route("/voclists/<int:voclist_id>/", methods=["UPDATE"])
+def update_voclist(voclist_id):
+    voclist = Voclist.query.get(voclist_id)
+    voclist.language_left = request.get_json()["language-left"]
+    voclist.language_right = request.get_json()["language-right"]
+
+    db.session.commit()
+
+    return ""
+
 @app.route("/voclists/", methods=["DELETE"])
 def delete_voclist():
 

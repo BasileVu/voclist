@@ -30,7 +30,7 @@ $('.edit-button').click(function () {
                 document.location.reload();
             }
         });
-    })
+    });
     modal.modal("show");
 });
 
