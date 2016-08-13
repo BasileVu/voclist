@@ -1,3 +1,8 @@
+h3 .label .glyphicon {
+    font-size: 10px;
+    margin-left: 5px;
+}
+
 table {
     margin-top: 20px;
 }
@@ -16,4 +21,8 @@ table .btn {
 
 .manage {
     width: 10%;
+}
+
+#add-entry-button {
+    margin-bottom: 50px;
 }

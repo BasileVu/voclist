@@ -58,6 +58,11 @@ $('.delete-button').click(function () {
     }
 });
 
-$('span[class="label"]').click(function () {
+$('tr .label').click(function () {
     window.location.search = "?tag=" + $(this).text().trim();
+});
+
+$('h3 .label').click(function () {
+    console.log($(this).text().trim())
+
 });
