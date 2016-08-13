@@ -89,7 +89,7 @@
     <div class="modal-dialog">
 
         <!-- Modal content-->
-        <form id="add-entry-form" action="/voclist/" method="post">
+        <form id="add-entry-form" action="/voclist/{{ voclist.id }}/" method="post">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -109,9 +109,6 @@
                         <label for="modal-tags">Tags (separated by ','):</label>
                         <input type="text" class="form-control" id="modal-tags" name="tags">
                     </div>
-
-                    <!-- FIXME -->
-                    <input id="voclist-id" type="text" value="{{ voclist.id }}" name="voclist-id" style="display: none;">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

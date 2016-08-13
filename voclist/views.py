@@ -42,9 +42,6 @@ def delete_voclist():
     db.session.delete(voclist)
     db.session.commit()
 
-    for e in Entry.query.filter_by(word="lololol"):
-        print(e)
-
     return ""
 
 
@@ -101,12 +98,11 @@ def add_tags(entry, tags):
             entry.tags.append(tag)
 
 
-@app.route("/voclist/", methods=["POST"])
-def create_entry():
+@app.route("/voclist/<int:voclist_id>/", methods=["POST"])
+def create_entry(voclist_id):
     word = request.form["word"]
     translation = request.form["translation"]
     tags = request.form["tags"].split(",")
-    voclist_id = request.form["voclist-id"]
 
     if word == "" or translation == "":
         abort(401)  # FIXME error code for invalid parameter or action
