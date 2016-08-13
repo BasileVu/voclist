@@ -65,7 +65,7 @@
                         <td>
                             {% for tag in entry.tags %}
                                 <span class="label"
-                                      style="background-color: #{{ gen_color(tag.id, 3) }}"
+                                      style="background-color: {{ color_generator.gen_color(tag.id) }}"
                                 >{{ tag.value }}</span>
                             {% endfor %}
                         </td>
