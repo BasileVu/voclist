@@ -55,8 +55,8 @@ def delete_voclist(voclist_id):
     return ""
 
 
-def filter_entries_by_tag(voclist, tag):
-    return voclist.entries.join(entry_tag).join(Tag).filter(Tag.value == tag)
+def filter_entries_by_tag(entries, tag_value):
+    return entries.join(entry_tag).join(Tag).filter(Tag.value == tag_value)
 
 
 @app.route("/voclist/<int:voclist_id>", methods=["GET"])
@@ -73,11 +73,11 @@ def render_voclist(voclist_id):
 
     if word != "":
         if tag != "":
-            entries = filter_entries_by_tag(voclist, tag).filter(Entry.word.contains(word))
+            entries = filter_entries_by_tag(entries, tag).filter(Entry.word.contains(word))
         else:
             entries = voclist.entries.filter(Entry.word.contains(word))
     elif tag != "":
-        entries = filter_entries_by_tag(voclist, tag)
+        entries = filter_entries_by_tag(entries, tag)
 
     return render_template(
         "voclist.html",
@@ -107,6 +107,17 @@ def add_tags(entry, tags):
                 db.session.commit()
             if tag not in entry.tags:
                 entry.tags.append(tag)
+
+
+def remove_tags(entry):
+    tags = entry.tags
+
+    for tag in tags:
+        if filter_entries_by_tag(Entry.query, tag.value).count() <= 1:
+            db.session.delete(tag)
+            db.session.commit()
+
+    entry.tags.clear()
 
 
 @app.route("/voclist/<int:voclist_id>", methods=["POST"])
@@ -141,8 +152,7 @@ def update_entry(entry_id):
     entry.word = json["word"]
     entry.translation = json["translation"]
 
-    entry.tags.clear()
-    # FIXME check tags to remove
+    remove_tags(entry)
     add_tags(entry, tags)
 
     db.session.commit()
@@ -152,10 +162,12 @@ def update_entry(entry_id):
 
 @app.route("/entry/<int:entry_id>", methods=["DELETE"])
 def delete_entry(entry_id):
-    db.session.delete(Entry.query.get(entry_id))
+    entry = Entry.query.get(entry_id)
+    remove_tags(entry)
+
+    db.session.delete(entry)
     db.session.commit()
 
-    # FIXME check tags to remove
     # FIXME check if on non-referenced delete exits
 
     return ""
