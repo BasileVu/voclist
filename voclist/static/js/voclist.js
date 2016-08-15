@@ -14,7 +14,7 @@ $('.edit-button').click(function () {
     modal.find('#update-modal-tags').attr("value", tags.join(", "));
 
     modal.find('#update-ok-button').click(function () {
-        ajaxUpdate("/entry/" + tr.attr("entry-id") + "/", {
+        ajaxUpdate("/entry/" + tr.attr("entry-id"), {
             "word": modal.find('#update-modal-word').val(),
             "translation": modal.find('#update-modal-translation').val(),
             "tags": modal.find('#update-modal-tags').val()
@@ -29,7 +29,7 @@ $('.delete-button').click(function () {
     // FIXME Yes/No
     var resp = prompt("Delete '" + tr.children("td").first().text() + "' ? Type 'YES' if you are sure.")
     if (resp === "YES") {
-        ajaxDelete("/entry/" + tr.attr("entry-id") + "/");
+        ajaxDelete("/entry/" + tr.attr("entry-id"));
     }
 });
 

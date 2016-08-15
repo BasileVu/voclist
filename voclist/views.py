@@ -1,4 +1,4 @@
-from flask import abort, redirect, render_template, request
+from flask import abort, redirect, render_template, request, url_for
 
 from voclist import app, db
 from voclist.models import Voclist, Entry, entry_tag, Tag
@@ -28,10 +28,10 @@ def create_voclist():
     db.session.add(voclist)
     db.session.commit()
 
-    return redirect("/voclist/%d/" % voclist.id)  # FIXME url_for
+    return redirect(url_for("render_voclist", voclist_id=voclist.id))
 
 
-@app.route("/voclists/<int:voclist_id>/", methods=["UPDATE"])
+@app.route("/voclists/<int:voclist_id>", methods=["UPDATE"])
 def update_voclist(voclist_id):
     voclist = Voclist.query.get(voclist_id)
     voclist.language_left = request.get_json()["language-left"]
@@ -42,7 +42,7 @@ def update_voclist(voclist_id):
     return ""
 
 
-@app.route("/voclists/<int:voclist_id>/", methods=["DELETE"])
+@app.route("/voclists/<int:voclist_id>", methods=["DELETE"])
 def delete_voclist(voclist_id):
     # FIXME on delete cascade
     voclist = Voclist.query.get(voclist_id)
@@ -59,7 +59,7 @@ def filter_entries_by_tag(voclist, tag):
     return voclist.entries.join(entry_tag).join(Tag).filter(Tag.value == tag)
 
 
-@app.route("/voclist/<int:voclist_id>/", methods=["GET"])
+@app.route("/voclist/<int:voclist_id>", methods=["GET"])
 def render_voclist(voclist_id):
     voclist = Voclist.query.get(voclist_id)
 
@@ -109,7 +109,7 @@ def add_tags(entry, tags):
                 entry.tags.append(tag)
 
 
-@app.route("/voclist/<int:voclist_id>/", methods=["POST"])
+@app.route("/voclist/<int:voclist_id>", methods=["POST"])
 def create_entry(voclist_id):
     word = request.form["word"]
     translation = request.form["translation"]
@@ -129,10 +129,10 @@ def create_entry(voclist_id):
     db.session.add(entry)
     db.session.commit()
 
-    return redirect("/voclist/%s/" % voclist_id)  # FIXME url_for
+    return redirect(url_for("render_voclist", voclist_id=voclist_id))
 
 
-@app.route("/entry/<int:entry_id>/", methods=["UPDATE"])
+@app.route("/entry/<int:entry_id>", methods=["UPDATE"])
 def update_entry(entry_id):
     json = request.get_json()
     entry = Entry.query.get(entry_id)
@@ -150,7 +150,7 @@ def update_entry(entry_id):
     return ""
 
 
-@app.route("/entry/<int:entry_id>/", methods=["DELETE"])
+@app.route("/entry/<int:entry_id>", methods=["DELETE"])
 def delete_entry(entry_id):
     db.session.delete(Entry.query.get(entry_id))
     db.session.commit()

@@ -8,7 +8,7 @@ function getSelectedId() {
 }
 
 $('#voclist-ok-button').click(function () {
-    document.location.href = "/voclist/" + getSelectedId() + "/";
+    document.location.href = "/voclist/" + getSelectedId();
 });
 
 $('#voclist-edit-button').click(function () {
@@ -23,7 +23,7 @@ $('#voclist-edit-button').click(function () {
     modal.find('#update-language-right').attr("value", languages[1].trim());
 
     modal.find('#update-ok-button').click(function () {
-        ajaxUpdate("/voclists/" + getSelectedId() + "/", {
+        ajaxUpdate("/voclists/" + getSelectedId(), {
             "language-left": modal.find('#update-language-left').val(),
             "language-right": modal.find('#update-language-right').val()
         });
@@ -34,6 +34,6 @@ $('#voclist-edit-button').click(function () {
 $('#voclist-delete-button').click(function () {
     var resp = prompt("Delete '" + $('#voclist-selection').val() + "' ? Type 'YES' if you are sure.")
     if (resp === "YES") {
-        ajaxDelete("/voclists/" + getSelectedId() + "/");
+        ajaxDelete("/voclists/" + getSelectedId());
     }
 });
