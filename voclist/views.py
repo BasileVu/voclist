@@ -1,4 +1,4 @@
-from flask import abort, redirect, render_template, request, url_for
+from flask import abort, redirect, render_template, request
 
 from voclist import app, db
 from voclist.models import Voclist, Entry, entry_tag, Tag
@@ -105,7 +105,6 @@ def add_tags(entry, tags):
                 tag = Tag(value=tag_str)
                 db.session.add(tag)
                 db.session.commit()
-
             if tag not in entry.tags:
                 entry.tags.append(tag)
 
