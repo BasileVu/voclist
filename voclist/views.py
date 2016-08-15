@@ -105,7 +105,9 @@ def add_tags(entry, tags):
                 tag = Tag(value=tag_str)
                 db.session.add(tag)
                 db.session.commit()
-            entry.tags.append(tag)
+
+            if tag not in entry.tags:
+                entry.tags.append(tag)
 
 
 @app.route("/voclist/<int:voclist_id>/", methods=["POST"])
