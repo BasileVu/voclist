@@ -14,42 +14,22 @@ $('.edit-button').click(function () {
     modal.find('#update-modal-tags').attr("value", tags.join(", "));
 
     modal.find('#update-ok-button').click(function () {
-        $.ajax("/entry/" + tr.attr("entry-id") + "/", {
-            type: "UPDATE",
-            contentType: "application/json",
-            data: JSON.stringify({
-                "word": modal.find('#update-modal-word').val(),
-                "translation": modal.find('#update-modal-translation').val(),
-                "tags": modal.find('#update-modal-tags').val()
-            }),
-            success: function () {
-                document.location.reload();
-            },
-            error: function () {
-                // FIXME
-                document.location.reload();
-            }
+        ajaxUpdate("/entry/" + tr.attr("entry-id") + "/", {
+            "word": modal.find('#update-modal-word').val(),
+            "translation": modal.find('#update-modal-translation').val(),
+            "tags": modal.find('#update-modal-tags').val()
         });
     });
     modal.modal("show");
 });
 
 $('.delete-button').click(function () {
-    var tr = $(this).parent().parent();  // FIXME
+    var tr = $(this).parents('tr');
 
-    // FIXME
+    // FIXME Yes/No
     var resp = prompt("Delete '" + tr.children("td").first().text() + "' ? Type 'YES' if you are sure.")
     if (resp === "YES") {
-        $.ajax("/entry/" + tr.attr("entry-id") + "/", {
-            type: "DELETE",
-            success: function () {
-                document.location.reload();
-            },
-            error: function () {
-                // FIXME
-                document.location.reload();
-            }
-        });
+        ajaxDelete("/entry/" + tr.attr("entry-id") + "/");
     }
 });
 
@@ -59,5 +39,5 @@ $('tr .label').click(function () {
 
 $('h3 .label').click(function () {
     console.log($(this).text().trim())
-
+    // TODO edit modal
 });

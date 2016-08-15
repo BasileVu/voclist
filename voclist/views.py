@@ -41,11 +41,11 @@ def update_voclist(voclist_id):
 
     return ""
 
-@app.route("/voclists/", methods=["DELETE"])
-def delete_voclist():
 
+@app.route("/voclists/<int:voclist_id>/", methods=["DELETE"])
+def delete_voclist(voclist_id):
     # FIXME on delete cascade
-    voclist = Voclist.query.get(int(request.get_json()["id"]))
+    voclist = Voclist.query.get(voclist_id)
     for e in voclist.entries:
         delete_entry(e.id)
 

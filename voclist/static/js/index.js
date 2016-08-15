@@ -23,44 +23,17 @@ $('#voclist-edit-button').click(function () {
     modal.find('#update-language-right').attr("value", languages[1].trim());
 
     modal.find('#update-ok-button').click(function () {
-        $.ajax("/voclists/" + getSelectedId() + "/", {
-            type: "UPDATE",
-            contentType: "application/json",
-            data: JSON.stringify({
-                "language-left": modal.find('#update-language-left').val(),
-                "language-right": modal.find('#update-language-right').val()
-            }),
-            success: function () {
-                document.location.reload();
-            },
-            error: function () {
-                // FIXME
-                document.location.reload();
-            }
+        ajaxUpdate("/voclists/" + getSelectedId() + "/", {
+            "language-left": modal.find('#update-language-left').val(),
+            "language-right": modal.find('#update-language-right').val()
         });
     });
     modal.modal("show");
 });
 
 $('#voclist-delete-button').click(function () {
-    var tr = $(this).parent().parent();  // FIXME
-
-    // FIXME
     var resp = prompt("Delete '" + $('#voclist-selection').val() + "' ? Type 'YES' if you are sure.")
     if (resp === "YES") {
-        $.ajax("/voclists/", {
-            type: "DELETE",
-            contentType: "application/json",
-            data: JSON.stringify({
-                id: getSelectedId()
-            }),
-            success: function () {
-                document.location.reload();
-            },
-            error: function () {
-                // FIXME
-                document.location.reload();
-            }
-        });
+        ajaxDelete("/voclists/" + getSelectedId() + "/");
     }
 });
