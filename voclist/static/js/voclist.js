@@ -3,7 +3,7 @@ function getVoclistId() {
     return parseInt(document.location.href.match(/.*\/([0-9]+)$/)[1]);
 }
 
-function fillModalValues(modal, title, word, translation, tags) {
+function setModalValues(modal, title, word, translation, tags) {
     modal.find('.modal-title').text(title);
     modal.find('#modal-word').attr("value", word);
     modal.find('#modal-translation').attr("value", translation);
@@ -21,7 +21,7 @@ function getModalValues(modal) {
 $('#add-entry-button').click(function () {
     var modal = $('#entry-modal');
 
-    fillModalValues(modal, "New entry", "", "", "");
+    setModalValues(modal, "New entry", "", "", "");
 
     modal.find('#entry-modal-ok-button').click(function () {
         ajaxPost("/voclist/" + getVoclistId(), getModalValues(modal));
@@ -39,7 +39,7 @@ $('.edit-button').click(function () {
         tags.push($(span).text().trim());
     });
 
-    fillModalValues(
+    setModalValues(
         modal,
         "Update " + tr.children("td").first().text(),
         tr.children("td:nth-child(2)").text(),

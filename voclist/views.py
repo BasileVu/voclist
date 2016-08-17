@@ -14,8 +14,8 @@ def render_index():
 
 @app.route("/voclists/", methods=["POST"])
 def create_voclist():
-    language_left = request.form["language-left"]
-    language_right = request.form["language-right"]
+    language_left = request.get_json()["language-left"]
+    language_right = request.get_json()["language-right"]
 
     if language_left == "" or language_right == "":
         abort(401)  # FIXME error code for invalid parameter or action
