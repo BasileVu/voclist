@@ -1,15 +1,41 @@
-{% macro entry_modal(prefix, title, form_method="", form_action="", button_ok_type="button") %}
-    <div class="modal fade" id="{{ prefix }}-entry-modal" role="dialog">
+<!--FIXME factorize -->
+{% macro entry_modal() %}
+    <div class="modal fade" id="entry-modal" role="dialog">
         <div class="modal-dialog">
-            <form
-                    {% if form_method %}
-                        method="{{ form_method }}"
-                    {% endif %}
+            <form>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="modal-word">Word:</label>
+                            <input type="text" class="form-control" id="modal-word" name="word">
+                        </div>
+                        <div class="form-group">
+                            <label for="modal-translation">Translation:</label>
+                            <input type="text" class="form-control" id="modal-translation" name="translation">
+                        </div>
+                        <div class="form-group">
+                            <label for="modal-tags">Tags (separated by ','):</label>
+                            <input type="text" class="form-control" id="modal-tags" name="tags">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="entry-modal-ok-button" type="button" class="btn btn-primary">Ok</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endmacro %}
 
-                    {% if form_action %}
-                        action="{{ form_action }}"
-                    {% endif %}
-            >
+{% macro voclist_modal() %}
+    <div class="modal fade" id="voclist-modal" role="dialog">
+        <div class="modal-dialog">
+            <form>
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -17,25 +43,22 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="{{ prefix }}-modal-word">Word:</label>
-                            <input type="text" class="form-control" id="{{ prefix }}-modal-word" name="word">
+                            <label for="{{ prefix }}-language-left">Language at the left:</label>
+                            <input type="text" class="form-control" id="{{ prefix }}-language-left" name="language-left">
                         </div>
                         <div class="form-group">
-                            <label for="{{ prefix }}-modal-translation">Translation:</label>
-                            <input type="text" class="form-control" id="{{ prefix }}-modal-translation" name="translation">
-                        </div>
-                        <div class="form-group">
-                            <label for="{{ prefix }}-modal-tags">Tags (separated by ','):</label>
-                            <input type="text" class="form-control" id="{{ prefix }}-modal-tags" name="tags">
+                            <label for="{{ prefix }}-language-right">Language at the right:</label>
+                            <input type="text" class="form-control" id="{{ prefix }}-language-right" name="language-right">
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button id="{{ prefix }}-ok-button" type={{ button_ok_type }} class="btn btn-primary">Ok</button>
+                        <button id="voclist-modal-ok-button" type="button" class="btn btn-primary">Ok</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 {% endmacro %}
+
 

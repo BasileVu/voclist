@@ -26,6 +26,8 @@
             <p>
                 Click on a tag to search entries related to this tag.
             </p>
+
+            <button id="add-entry-button" type="button" class="btn btn-primary">Add entry</button>
         </div>
 
         <div id="search" class="col-md-6">
@@ -83,23 +85,6 @@
         </tbody>
     </table>
 
-    <button id="add-entry-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-entry-modal">Add entry</button>
-
-    {{
-        modal.entry_modal(
-            "add",
-            "New entry for " ~ voclist,
-            "post",
-            "/voclist/" ~ voclist.id,
-            "submit"
-        )
-    }}
-
-    {{
-        modal.entry_modal(
-            "update",
-            "",
-        )
-    }}
+    {{ modal.entry_modal() }}
 
 {% endblock %}

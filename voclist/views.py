@@ -122,9 +122,9 @@ def remove_tags(entry):
 
 @app.route("/voclist/<int:voclist_id>", methods=["POST"])
 def create_entry(voclist_id):
-    word = request.form["word"]
-    translation = request.form["translation"]
-    tags = request.form["tags"].split(",")
+    word = request.get_json()["word"]
+    translation = request.get_json()["translation"]
+    tags = request.get_json()["tags"].split(",")
 
     if word == "" or translation == "":
         abort(401)  # FIXME error code for invalid parameter or action
