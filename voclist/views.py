@@ -171,3 +171,14 @@ def delete_entry(entry_id):
     # FIXME check if on non-referenced delete exits
 
     return ""
+
+
+@app.route("/voclist/<int:voclist_id>/tags")
+def render_tags(voclist_id):
+    voclist = Voclist.query.get(voclist_id)
+
+    return render_template(
+        "tags.html",
+        voclist=voclist,
+        tags=Tag.query.join(entry_tag).join(Entry).filter_by(voclist_id=voclist_id)
+    )
