@@ -73,16 +73,15 @@ def render_voclist(voclist_id):
 
     if word != "":
         if tag != "":
-            entries = filter_entries_by_tag(entries, tag).filter(Entry.word.contains(word))
-        else:
-            entries = voclist.entries.filter(Entry.word.contains(word))
+            entries = filter_entries_by_tag(entries, tag)
+        entries = entries.filter(Entry.word.contains(word))
     elif tag != "":
         entries = filter_entries_by_tag(entries, tag)
 
     return render_template(
         "voclist.html",
         voclist=voclist,
-        entries=entries,
+        entries=entries.order_by(Entry.word),
         search_word=word,
         search_tag=tag,
         color_generator=ColorGenerator(step=3, cp_max_value=9)
@@ -180,5 +179,5 @@ def render_tags(voclist_id):
     return render_template(
         "tags.html",
         voclist=voclist,
-        tags=Tag.query.join(entry_tag).join(Entry).filter_by(voclist_id=voclist_id)
+        tags=Tag.query.join(entry_tag).join(Entry).filter_by(voclist_id=voclist_id).order_by(Tag.value)
     )
