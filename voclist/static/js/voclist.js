@@ -23,7 +23,8 @@ $('#add-entry-button').click(function () {
 
     setModalValues(modal, "New entry", "", "", "");
 
-    modal.find('#entry-modal-ok-button').click(function () {
+    modal.find('form').on("submit", function (event) {
+        event.preventDefault();
         ajaxPost("/voclist/" + getVoclistId(), getModalValues(modal));
     });
 
@@ -34,7 +35,7 @@ $('.edit-button').click(function () {
     var tr = $(this).parents('tr');
     var modal = $('#entry-modal');
 
-    var tags = []
+    var tags = [];
     tr.children("td:nth-child(4)").children("span").toArray().forEach(function (span) {
         tags.push($(span).text().trim());
     });
@@ -47,7 +48,8 @@ $('.edit-button').click(function () {
         tags.join(", ")
     );
 
-    modal.find('#entry-modal-ok-button').click(function () {
+    modal.find('form').on("submit", function (event) {
+        event.preventDefault();
         ajaxUpdate("/entry/" + tr.attr("entry-id"), getModalValues(modal));
     });
 
@@ -57,9 +59,7 @@ $('.edit-button').click(function () {
 $('.delete-button').click(function () {
     var tr = $(this).parents('tr');
 
-    // FIXME Yes/No
-    var resp = prompt("Delete '" + tr.children("td").first().text() + "' ? Type 'YES' if you are sure.")
-    if (resp === "YES") {
+    if (confirm("Delete '" + tr.children("td").first().text() + "' ?")) {
         ajaxDelete("/entry/" + tr.attr("entry-id"));
     }
 });
@@ -69,6 +69,6 @@ $('tr .label').click(function () {
 });
 
 $('h3 .label').click(function () {
-    console.log($(this).text().trim())
+    console.log($(this).text().trim());
     // TODO edit modal
 });

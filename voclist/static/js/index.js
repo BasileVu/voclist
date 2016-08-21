@@ -29,7 +29,8 @@ $('#add-voclist-button').click(function () {
 
     setModalValues(modal, "New voclist", "", "");
 
-    modal.find('#voclist-modal-ok-button').click(function () {
+    modal.find('form').on("submit", function (event) {
+        event.preventDefault();
         ajaxPost("/voclists/", getModalValues(modal));
     });
 
@@ -40,10 +41,11 @@ $('#edit-button').click(function () {
     var modal = $('#voclist-modal');
 
     // FIXME
-    var languages = getSelectedName().replace(/\[[0-9]+\]/, "").split("-")
+    var languages = getSelectedName().replace(/\[[0-9]+\]/, "").split("-");
     setModalValues(modal, "Update " + getSelectedName(), languages[0].trim(), languages[1].trim());
 
-    modal.find('#voclist-modal-ok-button').click(function () {
+    modal.find('form').on("submit", function (event) {
+        event.preventDefault();
         ajaxUpdate("/voclists/" + getSelectedId(), getModalValues(modal));
     });
 
@@ -51,7 +53,7 @@ $('#edit-button').click(function () {
 });
 
 $('#delete-button').click(function () {
-    var resp = prompt("Delete '" + $('#voclist-selection').val() + "' ? Type 'YES' if you are sure.")
+    var resp = prompt("Delete '" + $('#voclist-selection').val() + "' ? Type 'YES' if you are sure.");
     if (resp === "YES") {
         ajaxDelete("/voclists/" + getSelectedId());
     }
