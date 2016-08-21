@@ -1,10 +1,15 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///voclist.db"
+__author__ = "Basile Vu <basile.vu@gmail.com>"
 
-db = SQLAlchemy(app)
+app = Flask(__name__)
+db = SQLAlchemy()
+
+
+def setup_app(config_file):
+    app.config.from_pyfile(config_file)
+    db.init_app(app)
+    app.app_context().push()
 
 import voclist.views
