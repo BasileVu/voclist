@@ -100,3 +100,37 @@ class DBTest(TestCase):
         db.session.commit()
 
         self.assertEqual(len(e.tags), 0)
+
+    def test_entry_deletion(self):
+        t = add_tag()
+        v = add_voclist()
+        e = add_entry(v, t)
+        e2 = add_entry(v, t)
+
+        remove_tags(e)
+        db.session.delete(e)
+        db.session.commit()
+        self.assertEqual(Tag.query.count(), 1)
+
+        remove_tags(e2)
+        db.session.delete(e2)
+        db.session.commit()
+
+        self.assertEqual(Tag.query.count(), 0)
+
+        db.session.commit()
+
+    def test_voclist_deletion(self):
+        t = add_tag()
+        v = add_voclist()
+        add_entry(v, t)
+        add_entry(v, t)
+
+        for entry in v.entries:
+            remove_tags(entry)
+
+        db.session.delete(v)
+        db.session.commit()
+
+        self.assertEqual(Entry.query.count(), 0)
+        self.assertEqual(Tag.query.count(), 0)

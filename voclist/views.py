@@ -44,10 +44,9 @@ def update_voclist(voclist_id):
 
 @app.route("/voclists/<int:voclist_id>", methods=["DELETE"])
 def delete_voclist(voclist_id):
-    # FIXME on delete cascade
     voclist = Voclist.query.get(voclist_id)
     for e in voclist.entries:
-        delete_entry(e.id)
+        remove_tags(e)
 
     db.session.delete(voclist)
     db.session.commit()
@@ -166,8 +165,6 @@ def delete_entry(entry_id):
 
     db.session.delete(entry)
     db.session.commit()
-
-    # FIXME check if on non-referenced delete exits
 
     return ""
 

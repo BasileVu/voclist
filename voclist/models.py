@@ -4,8 +4,8 @@ __author__ = "Basile Vu <basile.vu@gmail.com>"
 
 entry_tag = db.Table(
     "entry_tag",
-    db.Column("Entry_id", db.Integer, db.ForeignKey("entries.id")),
-    db.Column("Tag_id", db.Integer, db.ForeignKey("tags.id"))
+    db.Column("Entry_id", db.Integer, db.ForeignKey("entries.id"), primary_key=True),
+    db.Column("Tag_id", db.Integer, db.ForeignKey("tags.id"), primary_key=True)
 )
 
 
@@ -16,7 +16,7 @@ class Voclist(db.Model):
     language_left = db.Column(db.String, nullable=False)
     language_right = db.Column(db.String, nullable=False)
 
-    entries = db.relationship("Entry", backref="voclists", lazy="dynamic")
+    entries = db.relationship("Entry", backref="voclists", lazy="dynamic", cascade="delete")
 
     def __repr__(self):
         return "<EntrySet(language_left='%s', language_right='%s')>" % (self.language_left, self.language_right)
@@ -43,7 +43,7 @@ class Tag(db.Model):
     __tablename__ = "tags"
 
     id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String, nullable=False)
+    value = db.Column(db.String, unique=True, nullable=False)
 
     def __repr__(self):
         return "<Tag(value='%s')>" % self.value
