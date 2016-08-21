@@ -3,8 +3,7 @@ function getSelectedName() {
 }
 
 function getSelectedId() {
-    // FIXME
-    return getSelectedName().match(/\[([0-9]+)\]/)[1];
+    return $('#voclist-selection').find(":selected").attr("voclist-id");
 }
 
 $('#ok-button').click(function () {
@@ -41,7 +40,7 @@ $('#edit-button').click(function () {
     var modal = $('#voclist-modal');
 
     // FIXME
-    var languages = getSelectedName().replace(/\[[0-9]+\]/, "").split("-");
+    var languages = getSelectedName().split("-");
     setModalValues(modal, "Update " + getSelectedName(), languages[0].trim(), languages[1].trim());
 
     modal.find('form').on("submit", function (event) {
