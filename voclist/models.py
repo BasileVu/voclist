@@ -38,6 +38,32 @@ class Entry(db.Model):
     def __repr__(self):
         return "<Entry(word='%s', translation='%s', voclist_id='%s')>" % (self.word, self.translation, self.voclist_id)
 
+    def remove_tags(self):
+        for tag in self.tags:
+            if tag.entries.count() <= 1:
+                db.session.delete(tag)
+                db.session.commit()
+
+        self.tags.clear()
+
+    def add_tags(self, tags):
+        """
+        Adds tags to this entry, creating them if they don't exist.
+
+        :param tags: the tags to add. A list of strings.
+        """
+
+        for tag_str in tags:
+            tag_str = tag_str.strip()
+            if tag_str != "":
+                tag = Tag.query.filter_by(value=tag_str).first()
+                if tag is None:
+                    tag = Tag(value=tag_str)
+                    db.session.add(tag)
+                    db.session.commit()
+                if tag not in self.tags:
+                    self.tags.append(tag)
+
 
 class Tag(db.Model):
     __tablename__ = "tags"
@@ -47,3 +73,7 @@ class Tag(db.Model):
 
     def __repr__(self):
         return "<Tag(value='%s')>" % self.value
+
+    @staticmethod
+    def entries_from_value(value):
+        return Tag.query.filter_by(value=value).first().entries

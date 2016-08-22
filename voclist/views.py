@@ -46,16 +46,12 @@ def update_voclist(voclist_id):
 def delete_voclist(voclist_id):
     voclist = Voclist.query.get(voclist_id)
     for e in voclist.entries:
-        remove_tags(e)
+        e.remove_tags()
 
     db.session.delete(voclist)
     db.session.commit()
 
     return ""
-
-
-def filter_entries_by_tag(entries, tag_value):
-    return entries.join(entry_tag).join(Tag).filter(Tag.value == tag_value)
 
 
 @app.route("/voclist/<int:voclist_id>", methods=["GET"])
@@ -72,10 +68,10 @@ def render_voclist(voclist_id):
 
     if word != "":
         if tag != "":
-            entries = filter_entries_by_tag(entries, tag)
+            entries = Tag.entries_from_value(tag)
         entries = entries.filter(Entry.word.contains(word))
     elif tag != "":
-        entries = filter_entries_by_tag(entries, tag)
+        entries = Tag.entries_from_value(tag)
 
     return render_template(
         "voclist.html",
@@ -85,37 +81,6 @@ def render_voclist(voclist_id):
         search_tag=tag,
         color_generator=ColorGenerator(step=3, cp_max_value=9)
     )
-
-
-def add_tags(entry, tags):
-    """
-    Adds tags to an entry, creating them if they don't exist.
-
-    :param entry: the entry to which the tags will be added.
-    :param tags: the tags to add. A list of strings.
-    """
-
-    for tag_str in tags:
-        tag_str = tag_str.strip()
-        if tag_str != "":
-            tag = Tag.query.filter_by(value=tag_str).first()
-            if tag is None:
-                tag = Tag(value=tag_str)
-                db.session.add(tag)
-                db.session.commit()
-            if tag not in entry.tags:
-                entry.tags.append(tag)
-
-
-def remove_tags(entry):
-    tags = entry.tags
-
-    for tag in tags:
-        if filter_entries_by_tag(Entry.query, tag.value).count() <= 1:
-            db.session.delete(tag)
-            db.session.commit()
-
-    entry.tags.clear()
 
 
 @app.route("/voclist/<int:voclist_id>", methods=["POST"])
@@ -133,7 +98,7 @@ def create_entry(voclist_id):
         voclist_id=voclist_id
     )
 
-    add_tags(entry, tags)
+    entry.add_tags(tags)
 
     db.session.add(entry)
     db.session.commit()
@@ -150,8 +115,8 @@ def update_entry(entry_id):
     entry.word = json["word"]
     entry.translation = json["translation"]
 
-    remove_tags(entry)
-    add_tags(entry, tags)
+    entry.remove_tags()
+    entry.add_tags(tags)
 
     db.session.commit()
 
@@ -161,7 +126,7 @@ def update_entry(entry_id):
 @app.route("/entry/<int:entry_id>", methods=["DELETE"])
 def delete_entry(entry_id):
     entry = Entry.query.get(entry_id)
-    remove_tags(entry)
+    entry.remove_tags()
 
     db.session.delete(entry)
     db.session.commit()

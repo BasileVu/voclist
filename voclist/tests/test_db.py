@@ -107,12 +107,12 @@ class DBTest(TestCase):
         e = add_entry(v, t)
         e2 = add_entry(v, t)
 
-        remove_tags(e)
+        e.remove_tags()
         db.session.delete(e)
         db.session.commit()
         self.assertEqual(Tag.query.count(), 1)
 
-        remove_tags(e2)
+        e2.remove_tags()
         db.session.delete(e2)
         db.session.commit()
 
@@ -127,7 +127,7 @@ class DBTest(TestCase):
         add_entry(v, t)
 
         for entry in v.entries:
-            remove_tags(entry)
+            entry.remove_tags()
 
         db.session.delete(v)
         db.session.commit()
