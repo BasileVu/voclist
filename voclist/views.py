@@ -68,10 +68,10 @@ def render_voclist(voclist_id):
 
     if word != "":
         if tag != "":
-            entries = Tag.entries_from_value(tag)
+            entries = Tag.get_from_val(tag).entries
         entries = entries.filter(Entry.word.contains(word))
     elif tag != "":
-        entries = Tag.entries_from_value(tag)
+        entries = Tag.get_from_val(tag).entries
 
     return render_template(
         "voclist.html",
@@ -134,7 +134,7 @@ def delete_entry(entry_id):
     return ""
 
 
-@app.route("/voclist/<int:voclist_id>/tags")
+@app.route("/voclist/<int:voclist_id>/tags", methods=["GET"])
 def render_tags(voclist_id):
     voclist = Voclist.query.get(voclist_id)
 
@@ -143,3 +143,12 @@ def render_tags(voclist_id):
         voclist=voclist,
         tags=Tag.query.join(entry_tag).join(Entry).filter_by(voclist_id=voclist_id).order_by(Tag.value)
     )
+
+
+@app.route("/tags/<string:old_value>", methods=["PUT"])
+def update_tag(old_value):
+    tag = Tag.get_from_val(old_value)
+    tag.value = request.get_json()["value"].strip()
+    db.session.commit()
+    print(Tag.query.get(tag.id).value)
+    return ""

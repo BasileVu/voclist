@@ -7,7 +7,7 @@ function getSelectedId() {
 }
 
 $('#ok-button').click(function () {
-    document.location.href = "/voclist/" + getSelectedId();
+    window.location.href = "/voclist/" + getSelectedId();
 });
 
 function setModalValues(modal, title, left, right) {

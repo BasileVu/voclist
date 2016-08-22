@@ -75,5 +75,5 @@ class Tag(db.Model):
         return "<Tag(value='%s')>" % self.value
 
     @staticmethod
-    def entries_from_value(value):
-        return Tag.query.filter_by(value=value).first().entries
+    def get_from_val(value):
+        return Tag.query.filter_by(value=value).first()

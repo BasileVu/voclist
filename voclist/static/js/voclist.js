@@ -1,6 +1,6 @@
 // FIXME
 function getVoclistId() {
-    return parseInt(document.location.href.match(/.*\/([0-9]+)$/)[1]);
+    return parseInt(window.location.pathname.match(/.*\/([0-9]+)$/)[1]);
 }
 
 function setModalValues(modal, title, word, translation, tags) {
@@ -68,7 +68,29 @@ $('tr .label').click(function () {
     window.location.search = "?tag=" + $(this).text().trim();
 });
 
-$('h3 .label').click(function () {
-    console.log($(this).text().trim());
-    // TODO edit modal
+$('#tag-value').click(function () {
+    var tag = window.location.href.match(/tag=([^&]*)/)[1];
+
+    $(this).replaceWith(
+        '<form id="tag-edit-form" class="form-inline">' +
+            '<div class="form-group">' +
+                '<input id="input-tag-value" class="form-control" type="text" value="' + tag + '">' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<button type="submit" class="btn btn-primary">Ok</button>' +
+            '</div>' +
+        '</form>'
+    );
+
+    $('#tag-edit-form').on("submit", function (event) {
+        event.preventDefault();
+
+        var newValue = $('#input-tag-value').val();
+        ajaxPut("/tags/" + tag, {
+            value: newValue
+        }, function () {
+            console.log("success!");
+            window.location.search = "?tag=" + newValue;
+        });
+    });
 });
