@@ -1,41 +1,30 @@
-// FIXME factorize
+function prepareObj(method, data, success, error, obj) {
+    if (obj === undefined) {
+        obj = {}
+    }
 
-function ajaxPost(path, data) {
-    $.ajax(path, {
-        method: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(data),
-        success: function () {
-            document.location.reload();
-        },
-        error: function () {
-            document.location.reload(); // FIXME error handling
-        }
-    });
+    obj["method"] = method;
+    obj["contentType"] = "application/json";
+    obj["data"] = JSON.stringify(data);
+
+    obj["success"] = success !== undefined ? success : function () {
+        document.location.reload(); // FIXME notification
+    };
+    obj["error"] = error !== undefined ? error : function () {
+        document.location.reload(); // FIXME notification
+    };
+
+    return obj;
 }
 
-function ajaxUpdate(path, data) {
-    $.ajax(path, {
-        method: "UPDATE",
-        contentType: "application/json",
-        data: JSON.stringify(data),
-        success: function () {
-            document.location.reload();
-        },
-        error: function () {
-            document.location.reload(); // FIXME error handling
-        }
-    });
+function ajaxPost(path, data, success, error, obj) {
+    $.ajax(path, prepareObj("POST", data, success, error, obj));
 }
 
-function ajaxDelete(path) {
-    $.ajax(path, {
-        method: "DELETE",
-        success: function () {
-            document.location.reload();
-        },
-        error: function () {
-            document.location.reload(); // FIXME error handling
-        }
-    });
+function ajaxPut(path, data, success, error, obj) {
+    $.ajax(path, prepareObj("PUT", data, success, error, obj));
+}
+
+function ajaxDelete(path, data, success, error, obj) {
+    $.ajax(path, prepareObj("DELETE", data, success, error, obj));
 }

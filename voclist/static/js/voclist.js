@@ -50,7 +50,7 @@ $('.edit-button').click(function () {
 
     modal.find('form').on("submit", function (event) {
         event.preventDefault();
-        ajaxUpdate("/entry/" + tr.attr("entry-id"), getModalValues(modal));
+        ajaxPut("/entry/" + tr.attr("entry-id"), getModalValues(modal));
     });
 
     modal.modal("show");

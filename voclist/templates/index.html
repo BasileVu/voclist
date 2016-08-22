@@ -20,8 +20,7 @@
         {% if voclists %}
             <select id="voclist-selection" class="form-control">
                 {% for voclist in voclists %}
-                <!-- FIXME remove id -->
-                <option voclist-id="{{ voclist.id }}">{{ voclist }}</option>
+                    <option voclist-id="{{ voclist.id }}">{{ voclist }}</option>
                 {% endfor %}
             </select>
         {% else %}

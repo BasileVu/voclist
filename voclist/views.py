@@ -31,7 +31,7 @@ def create_voclist():
     return redirect(url_for("render_voclist", voclist_id=voclist.id))
 
 
-@app.route("/voclists/<int:voclist_id>", methods=["UPDATE"])
+@app.route("/voclists/<int:voclist_id>", methods=["PUT"])
 def update_voclist(voclist_id):
     voclist = Voclist.query.get(voclist_id)
     voclist.language_left = request.get_json()["language-left"]
@@ -103,10 +103,10 @@ def create_entry(voclist_id):
     db.session.add(entry)
     db.session.commit()
 
-    return redirect(url_for("render_voclist", voclist_id=voclist_id))
+    return ""
 
 
-@app.route("/entry/<int:entry_id>", methods=["UPDATE"])
+@app.route("/entry/<int:entry_id>", methods=["PUT"])
 def update_entry(entry_id):
     json = request.get_json()
     entry = Entry.query.get(entry_id)

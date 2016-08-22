@@ -45,7 +45,7 @@ $('#edit-button').click(function () {
 
     modal.find('form').on("submit", function (event) {
         event.preventDefault();
-        ajaxUpdate("/voclists/" + getSelectedId(), getModalValues(modal));
+        ajaxPut("/voclists/" + getSelectedId(), getModalValues(modal));
     });
 
     modal.modal("show");
