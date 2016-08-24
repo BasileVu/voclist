@@ -65,12 +65,11 @@ class DBTest(TestCase):
         self.assertEqual(t_get, t)
         self.assertEqual(Tag.query.get(1).value, "test")
 
-    def test_unique_tag_name_creation(self):
+    def test_tag_value_uniqueness(self):
         add_tag("t")
         self.assertRaises(sqlalchemy.exc.IntegrityError, add_tag, "t")
+        db.session.rollback()
 
-    def test_unique_tag_name_update(self):
-        add_tag("t")
         t2 = add_tag("t2")
         t2.value = "t"
         self.assertRaises(sqlalchemy.exc.IntegrityError, db.session.commit)
