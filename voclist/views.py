@@ -147,6 +147,16 @@ def render_tags(voclist_id):
 @app.route("/tags/<string:old_value>", methods=["PUT"])
 def update_tag(old_value):
     tag = Tag.get_from_val(old_value)
-    tag.value = request.get_json()["value"].strip()
+    value = request.get_json()["value"].strip()
+    tag_existing = Tag.query.filter_by(value=value).first()
+
+    if tag_existing is not None:
+        for e in tag.entries:
+            e.tags.append(tag_existing)
+        db.session.delete(tag)
+    else:
+        tag.value = value
+
     db.session.commit()
-    return jsonify(value=tag.value)
+
+    return jsonify(value=value)
