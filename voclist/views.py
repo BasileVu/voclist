@@ -1,4 +1,4 @@
-from flask import abort, redirect, render_template, request, url_for
+from flask import abort, redirect, render_template, request, url_for, jsonify
 
 from voclist import app, db
 from voclist.models import Voclist, Entry, entry_tag, Tag
@@ -64,21 +64,20 @@ def render_voclist(voclist_id):
     entries = voclist.entries
 
     word = request.args.get("word", "").strip()
-    tag = request.args.get("tag", "").strip()
+    tag_value = request.args.get("tag", "").strip()
 
     if word != "":
-        if tag != "":
-            entries = Tag.get_from_val(tag).entries
         entries = entries.filter(Entry.word.contains(word))
-    elif tag != "":
-        entries = Tag.get_from_val(tag).entries
+
+    if tag_value != "":
+        entries = entries.join(entry_tag).join(Tag).filter(Tag.value.contains(tag_value))
 
     return render_template(
         "voclist.html",
         voclist=voclist,
         entries=entries.order_by(Entry.word),
         search_word=word,
-        search_tag=tag,
+        search_tag=tag_value,
         color_generator=ColorGenerator(step=3, cp_max_value=9)
     )
 
@@ -150,5 +149,4 @@ def update_tag(old_value):
     tag = Tag.get_from_val(old_value)
     tag.value = request.get_json()["value"].strip()
     db.session.commit()
-    print(Tag.query.get(tag.id).value)
-    return ""
+    return jsonify(value=tag.value)

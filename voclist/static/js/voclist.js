@@ -88,9 +88,8 @@ $('#tag-value').click(function () {
         var newValue = $('#input-tag-value').val();
         ajaxPut("/tags/" + tag, {
             value: newValue
-        }, function () {
-            console.log("success!");
-            window.location.search = "?tag=" + newValue;
+        }, function (data) {
+            window.location.search = "?tag=" + data["value"];
         });
     });
 });
