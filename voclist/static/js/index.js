@@ -28,7 +28,7 @@ $('#add-voclist-button').click(function () {
 
     setModalValues(modal, "New voclist", "", "");
 
-    modal.find('form').on("submit", function (event) {
+    modal.find('form').submit(function (event) {
         event.preventDefault();
         ajaxPost("/voclists/", getModalValues(modal));
     });
@@ -43,7 +43,7 @@ $('#edit-button').click(function () {
     var languages = getSelectedName().split("-");
     setModalValues(modal, "Update " + getSelectedName(), languages[0].trim(), languages[1].trim());
 
-    modal.find('form').on("submit", function (event) {
+    modal.find('form').submit(function (event) {
         event.preventDefault();
         ajaxPut("/voclists/" + getSelectedId(), getModalValues(modal));
     });

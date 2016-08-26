@@ -18,12 +18,18 @@ function getModalValues(modal) {
     };
 }
 
+$('#search-form').submit(function () {
+    $(this).find('input').filter(function () {
+        return $(this).val() === "";
+    }).attr('name', '');
+});
+
 $('#add-entry-button').click(function () {
     var modal = $('#entry-modal');
 
     setModalValues(modal, "New entry", "", "", "");
 
-    modal.find('form').on("submit", function (event) {
+    modal.find('form').submit(function (event) {
         event.preventDefault();
         ajaxPost("/voclist/" + getVoclistId(), getModalValues(modal));
     });
@@ -48,7 +54,7 @@ $('.edit-button').click(function () {
         tags.join(", ")
     );
 
-    modal.find('form').on("submit", function (event) {
+    modal.find('form').submit(function (event) {
         event.preventDefault();
         ajaxPut("/entry/" + tr.attr("entry-id"), getModalValues(modal));
     });
@@ -82,7 +88,7 @@ $('#tag-value').click(function () {
         '</form>'
     );
 
-    $('#tag-edit-form').on("submit", function (event) {
+    $('#tag-edit-form').submit(function (event) {
         event.preventDefault();
 
         var newValue = $('#input-tag-value').val();
