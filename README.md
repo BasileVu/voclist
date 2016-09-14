@@ -12,11 +12,11 @@ I began to develop this app with the idea that, while providing almost the same 
 words and their translations, the words can belong to multiple categories instead of just one.
 That, and I wanted to play with flask and sqlalchemy.
 
-## Installation
+## Installation and usage
 1. Have python 3 installed and pip ready
-2. Download or clone the repo. Go to the folder (inside "voclist") and type 
-$ pip install -r requirements.txt
-3. Run the server by entering
-$ python runserver.py
+2. Download or clone the repo. 
+3. Go to the folder (inside "voclist") and type `$ pip install -r requirements.txt`.
+4. Run the server by entering `$ python runserver.py`. The default address and port are `127.0.0.1` and `5000`. You can easily change
+them by editing the `voclist.cfg` configuration file.
 
-That's it, you can then go to the address you specified and create voclists!
+That's it, you can open your browser, go to the address you specified and create your voclists!
