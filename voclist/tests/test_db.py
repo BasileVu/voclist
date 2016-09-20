@@ -1,10 +1,8 @@
 import sqlalchemy.exc
-import sqlite3
 
 from flask_testing import TestCase
 
 from voclist import *
-from voclist.views import *
 from voclist.models import *
 
 __author__ = "Basile Vu <basile.vu@gmail.com>"
