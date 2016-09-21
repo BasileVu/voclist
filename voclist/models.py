@@ -1,3 +1,7 @@
+"""
+Contains the models used in the DB.
+"""
+
 from voclist import db
 
 __author__ = "Basile Vu <basile.vu@gmail.com>"
@@ -10,6 +14,8 @@ entry_tag = db.Table(
 
 
 class Voclist(db.Model):
+    """Represents a vocbulary list containing entries."""
+
     __tablename__ = "voclists"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -26,6 +32,8 @@ class Voclist(db.Model):
 
 
 class Entry(db.Model):
+    """Represents an entry of a voclist."""
+
     __tablename__ = "entries"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -39,6 +47,8 @@ class Entry(db.Model):
         return "<Entry(word='%s', translation='%s', voclist_id='%s')>" % (self.word, self.translation, self.voclist_id)
 
     def remove_tags(self):
+        """Removes the tags related to this entry if they aren't being referred by another entry."""
+
         for tag in self.tags:
             if tag.entries.count() <= 1:
                 db.session.delete(tag)
@@ -66,6 +76,8 @@ class Entry(db.Model):
 
 
 class Tag(db.Model):
+    """Represents a tag linked to some entries."""
+    
     __tablename__ = "tags"
 
     id = db.Column(db.Integer, primary_key=True)
