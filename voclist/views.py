@@ -1,3 +1,5 @@
+"""Regroups all the views and their routes."""
+
 from flask import abort, redirect, render_template, request, url_for, jsonify
 
 from voclist import app, db
@@ -9,11 +11,22 @@ __author__ = "Basile Vu <basile.vu@gmail.com>"
 
 @app.route("/")
 def render_index():
+    """
+    Renders the index page.
+
+    :return: The index page.
+    """
     return render_template("index.html", voclists=Voclist.query.all())
 
 
 @app.route("/voclists/", methods=["POST"])
 def create_voclist():
+    """
+    Creates a voclist and renders the page related to this voclist.
+    In the json received, the left and right languages must exist with keys "language-left" and "language-right."
+
+    :return: The page of the newly created voclist.
+    """
     language_left = request.get_json()["language-left"]
     language_right = request.get_json()["language-right"]
 
@@ -33,6 +46,12 @@ def create_voclist():
 
 @app.route("/voclists/<int:voclist_id>", methods=["PUT"])
 def update_voclist(voclist_id):
+    """
+    Updates the name of the languages of a given voclist.
+    In the json received, the left and right languages must exist with keys "language-left" and "language-right."
+
+    :param voclist_id: The id of the voclist to update. Must be passed in the request url.
+    """
     voclist = Voclist.query.get(voclist_id)
     voclist.language_left = request.get_json()["language-left"]
     voclist.language_right = request.get_json()["language-right"]

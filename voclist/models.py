@@ -77,7 +77,7 @@ class Entry(db.Model):
 
 class Tag(db.Model):
     """Represents a tag linked to some entries."""
-    
+
     __tablename__ = "tags"
 
     id = db.Column(db.Integer, primary_key=True)
