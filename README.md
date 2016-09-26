@@ -13,9 +13,9 @@ words and their translations, the words can belong to multiple categories instea
 That, and I wanted to play with flask and sqlalchemy.
 
 ## Installation and usage
-1. Have python 3 installed and pip ready
-2. Download or clone the repo. 
-3. Go to the folder (inside "voclist") and type `$ pip install -r requirements.txt`.
+1. Have python 3 installed and pip ready. Make sure you use the right `pip`and `python`versions if you have multiple versions of python (2 and 3 for example). You may also want to setup a vitual environment.
+2. Download or clone the repo and `cd` into it.
+3. `$ pip install -r requirements.txt`.
 4. Run the server by entering `$ python runserver.py`. The default address and port are `127.0.0.1` and `5000`. You can easily change
 them by editing the `voclist.cfg` configuration file.
 
