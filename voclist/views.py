@@ -23,6 +23,7 @@ def render_index():
 def create_voclist():
     """
     Creates a voclist and renders the page related to this voclist.
+
     In the json received, the left and right languages must exist with keys "language-left" and "language-right."
 
     :return: The page of the newly created voclist.
@@ -48,7 +49,8 @@ def create_voclist():
 def update_voclist(voclist_id):
     """
     Updates the name of the languages of a given voclist.
-    In the json received, the left and right languages must exist with keys "language-left" and "language-right."
+
+    In the json sent with the request, the left and right languages must exist with keys "language-left" and "language-right."
 
     :param voclist_id: The id of the voclist to update. Must be passed in the request url.
     """
@@ -63,6 +65,11 @@ def update_voclist(voclist_id):
 
 @app.route("/voclists/<int:voclist_id>", methods=["DELETE"])
 def delete_voclist(voclist_id):
+    """
+    Deletes a given voclist and its entries.
+
+    :param voclist_id: The id of the voclist to delete. Must be passed in the request url.
+    """
     voclist = Voclist.query.get(voclist_id)
     for e in voclist.entries:
         e.remove_tags()
@@ -75,6 +82,21 @@ def delete_voclist(voclist_id):
 
 @app.route("/voclist/<int:voclist_id>", methods=["GET"])
 def render_voclist(voclist_id):
+    """
+    Prepares the page related to a given voclist and given entry filters and returns it.
+
+    In the arguments of the request, some entry filters can be passed as arguments. These are the following:
+     - word, showing entries whose "word" attribute contains the value,
+     - tag, showing entries which have a tag having whose "value" attribute contains the value.
+
+     For example:
+      - /voclist/1?word=foo : shows all the entries whose word contains word "foo".
+      - /voclist/1?tag=bar : shows all the entries whose tags contain "bar".
+      - /voclist/1?word=foo&tag=bar : shows all the entries whose word contains word "foo" and tags contain "bar".
+
+    :param voclist_id: The id of the voclist to render.
+    :return: The page of the selected voclist.
+    """
     voclist = Voclist.query.get(voclist_id)
 
     if voclist is None:
@@ -103,6 +125,13 @@ def render_voclist(voclist_id):
 
 @app.route("/voclist/<int:voclist_id>", methods=["POST"])
 def create_entry(voclist_id):
+    """
+    Create an entry with the given values in the given voclist.
+
+    In the json sent with the request, the word, its translation and the optional tags for the entry must exist.
+
+    :param voclist_id: The voclist in which the entry will be added.
+    """
     word = request.get_json()["word"]
     translation = request.get_json()["translation"]
     tags = request.get_json()["tags"].split(",")
