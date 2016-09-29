@@ -18,7 +18,6 @@ That, and I wanted to play with flask and sqlalchemy.
 3. `$ pip install -r requirements.txt`.
 
 ## Usage
-`runserver.py [-h] [-p PORT] [--host HOST]`. The default address and port are `127.0.0.1` and `5000`. You can easily change
-them by specifying editing the `voclist.cfg` configuration file.
+`runserver.py [-h] [-p PORT] [--host HOST]`. The default address and port are `127.0.0.1` and `5000`.
 
 That's it, you can open your browser, go to the address you specified and create your voclists!
