@@ -1,3 +1,5 @@
+"""Runs the server for the app."""
+
 from argparse import ArgumentParser
 
 from voclist import app, db, setup_app

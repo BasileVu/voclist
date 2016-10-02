@@ -126,9 +126,11 @@ def render_voclist(voclist_id):
 @app.route("/voclist/<int:voclist_id>", methods=["POST"])
 def create_entry(voclist_id):
     """
-    Create an entry with the given values in the given voclist.
+    Creates an entry with the given values in the given voclist.
 
-    In the json sent with the request, the word, its translation and the optional tags for the entry must exist.
+    In the json sent with the request, the word, its translation and the optional tags for the entry must exist
+    with keys "word", "translation" and "tags".
+    The tags should be in a string of the form "t1, t2, ...".
 
     :param voclist_id: The voclist in which the entry will be added.
     """
@@ -155,6 +157,15 @@ def create_entry(voclist_id):
 
 @app.route("/entry/<int:entry_id>", methods=["PUT"])
 def update_entry(entry_id):
+    """
+    Updates en entry with the given values.
+
+    In the json sent with the request, the word, its translation and the optional tags for the entry must exist
+    with keys "word", "translation" and "tags".
+    The tags should be in a string of the form "t1, t2, ...".
+
+    :param entry_id: The id of the entry to update.
+    """
     json = request.get_json()
     entry = Entry.query.get(entry_id)
     tags = json.get("tags", "").split(",")
@@ -172,6 +183,11 @@ def update_entry(entry_id):
 
 @app.route("/entry/<int:entry_id>", methods=["DELETE"])
 def delete_entry(entry_id):
+    """
+    Deletes a given entry.
+
+    :param entry_id: The id of the entry to delete.
+    """
     entry = Entry.query.get(entry_id)
     entry.remove_tags()
 
@@ -183,6 +199,12 @@ def delete_entry(entry_id):
 
 @app.route("/voclist/<int:voclist_id>/tags", methods=["GET"])
 def render_tags(voclist_id):
+    """
+    Renders the given voclist's page.
+
+    :param voclist_id: The id of the voclist to render.
+    :return: The voclist page.
+    """
     voclist = Voclist.query.get(voclist_id)
 
     return render_template(
@@ -194,6 +216,12 @@ def render_tags(voclist_id):
 
 @app.route("/tags/<string:old_value>", methods=["PUT"])
 def update_tag(old_value):
+    """
+    Updates the value of a given tag.
+
+    :param old_value: The old value of the tag.
+    :return: A json containing the new value.
+    """
     tag = Tag.get_from_val(old_value)
     value = request.get_json()["value"].strip()
     tag_existing = Tag.query.filter_by(value=value).first()
