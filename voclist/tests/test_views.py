@@ -56,11 +56,15 @@ class VoclistViewTest(TestCase):
         db.session.remove()
         db.drop_all()
 
+    @staticmethod
+    def has_no_entries(response):
+        return '<tbody></tbody>' in str(response.data).replace(" ", "").replace("\\n", "")
+
     def test_voclist_empty(self):
         r = self.client.get("/voclist/1")
         self.assert200(r)
 
-        assert '<tbody></tbody>' in str(r.data).replace(" ", "").replace("\\n", "")
+        assert self.has_no_entries(r)
 
     def test_voclist_one_entry(self):
         t = add_tag("test")
@@ -77,11 +81,79 @@ class VoclistViewTest(TestCase):
         assert 'Edit</button>' in stripped
         assert 'Delete</button>' in stripped
 
-    def test_voclist_tag_filter(self):
+    def test_voclist_word_filters(self):
+        add_entry("c1", "d1", self.v)
+        add_entry("c2", "d2", self.v)
+        add_entry("c3", "d3", self.v)
+
+        r = self.client.get("/voclist/1?word=d")
+        self.assert200(r)
+        assert self.has_no_entries(r)
+
+        r = self.client.get("/voclist/1?word=c")
+        self.assert200(r)
+        data_str = str(r.data)
+
+        assert "c1" in data_str
+        assert "c2" in data_str
+        assert "c3" in data_str
+
+        r = self.client.get("/voclist/1?word=c1")
+        self.assert200(r)
+        data_str = str(r.data)
+
+        assert "c1" in data_str
+        assert "c2" not in data_str
+        assert "c3" not in data_str
+
+    def test_voclist_tag_filters(self):
         t1 = add_tag("test1")
         t2 = add_tag("test2")
 
-        e1 = add_entry("c1", "d1", self.v, t1)
-        e2 = add_entry("c2", "d2", self.v, t2)
-        e3 = add_entry("c3", "d3", self.v, t2)
+        add_entry("c1", "d1", self.v, t1)
+        add_entry("c2", "d2", self.v, t2)
+        add_entry("c3", "d3", self.v, t2)
 
+        r = self.client.get("/voclist/1?tag=d")
+        self.assert200(r)
+        assert self.has_no_entries(r)
+
+        r = self.client.get("/voclist/1?tag=test")
+        self.assert200(r)
+        data_str = str(r.data)
+
+        assert "c1" in data_str
+        assert "c2" in data_str
+        assert "c3" in data_str
+
+        r = self.client.get("/voclist/1?tag=test2")
+        self.assert200(r)
+        data_str = str(r.data)
+
+        assert "c1" not in data_str
+        assert "c2" in data_str
+        assert "c3" in data_str
+
+    def test_filters_together(self):
+        t1 = add_tag("test1")
+        t2 = add_tag("test2")
+
+        add_entry("c1", "d1", self.v, t1)
+        add_entry("c2", "d2", self.v, t2)
+        add_entry("c3", "d3", self.v, t2)
+
+        r = self.client.get("/voclist/1?word=c&tag=test")
+        self.assert200(r)
+        data_str = str(r.data)
+
+        assert "c1" in data_str
+        assert "c2" in data_str
+        assert "c3" in data_str
+
+        r = self.client.get("/voclist/1?word=c2&tag=test2")
+        self.assert200(r)
+        data_str = str(r.data)
+
+        assert "c1" not in data_str
+        assert "c2" in data_str
+        assert "c3" not in data_str
