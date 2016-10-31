@@ -51,6 +51,7 @@ class VoclistViewTest(TestCase):
     def setUp(self):
         db.create_all()
         self.v = add_voclist("a", "b")
+        self.v_uri = "/voclist/%d" % self.v.id
 
     def tearDown(self):
         db.session.remove()
@@ -60,8 +61,16 @@ class VoclistViewTest(TestCase):
     def has_no_entries(response):
         return '<tbody></tbody>' in str(response.data).replace(" ", "").replace("\\n", "")
 
+    def test_breadcrumbs(self):
+        r = self.client.get(self.v_uri)
+        self.assert200(r)
+        data_str = str(r.data)
+
+        assert '<ol class="breadcrumb">' in data_str
+        assert '<li class="active">a - b</li>' in data_str
+
     def test_voclist_empty(self):
-        r = self.client.get("/voclist/1")
+        r = self.client.get(self.v_uri)
         self.assert200(r)
 
         assert self.has_no_entries(r)
@@ -70,7 +79,7 @@ class VoclistViewTest(TestCase):
         t = add_tag("test")
         add_entry("c", "d", self.v, t)
 
-        r = self.client.get("/voclist/1")
+        r = self.client.get(self.v_uri)
         self.assert200(r)
 
         stripped = str(r.data).replace(" ", "")
@@ -86,11 +95,11 @@ class VoclistViewTest(TestCase):
         add_entry("c2", "d2", self.v)
         add_entry("c3", "d3", self.v)
 
-        r = self.client.get("/voclist/1?word=d")
+        r = self.client.get(self.v_uri + "?word=d")
         self.assert200(r)
         assert self.has_no_entries(r)
 
-        r = self.client.get("/voclist/1?word=c")
+        r = self.client.get(self.v_uri + "?word=c")
         self.assert200(r)
         data_str = str(r.data)
 
@@ -98,7 +107,7 @@ class VoclistViewTest(TestCase):
         assert "c2" in data_str
         assert "c3" in data_str
 
-        r = self.client.get("/voclist/1?word=c1")
+        r = self.client.get(self.v_uri + "?word=c1")
         self.assert200(r)
         data_str = str(r.data)
 
@@ -114,11 +123,11 @@ class VoclistViewTest(TestCase):
         add_entry("c2", "d2", self.v, t2)
         add_entry("c3", "d3", self.v, t2)
 
-        r = self.client.get("/voclist/1?tag=d")
+        r = self.client.get(self.v_uri + "?tag=d")
         self.assert200(r)
         assert self.has_no_entries(r)
 
-        r = self.client.get("/voclist/1?tag=test")
+        r = self.client.get(self.v_uri + "?tag=test")
         self.assert200(r)
         data_str = str(r.data)
 
@@ -126,7 +135,7 @@ class VoclistViewTest(TestCase):
         assert "c2" in data_str
         assert "c3" in data_str
 
-        r = self.client.get("/voclist/1?tag=test2")
+        r = self.client.get(self.v_uri + "?tag=test2")
         self.assert200(r)
         data_str = str(r.data)
 
@@ -142,7 +151,7 @@ class VoclistViewTest(TestCase):
         add_entry("c2", "d2", self.v, t2)
         add_entry("c3", "d3", self.v, t2)
 
-        r = self.client.get("/voclist/1?word=c&tag=test")
+        r = self.client.get(self.v_uri + "?word=c&tag=test")
         self.assert200(r)
         data_str = str(r.data)
 
@@ -150,7 +159,7 @@ class VoclistViewTest(TestCase):
         assert "c2" in data_str
         assert "c3" in data_str
 
-        r = self.client.get("/voclist/1?word=c2&tag=test2")
+        r = self.client.get(self.v_uri + "?word=c2&tag=test2")
         self.assert200(r)
         data_str = str(r.data)
 
