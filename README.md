@@ -1,4 +1,6 @@
 # voclist
+[![Build Status](https://travis-ci.org/Flagoul/voclist.svg?branch=master)](https://travis-ci.org/Flagoul/voclist)
+
 A simple app to create vocabulary lists and manage them.
 
 ## Context
