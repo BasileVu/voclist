@@ -197,13 +197,13 @@ def delete_entry(entry_id):
     return ""
 
 
-@app.route("/voclist/<int:voclist_id>/tags", methods=["GET"])
+@app.route("/voclist/<int:voclist_id>/tags/", methods=["GET"])
 def render_tags(voclist_id):
     """
-    Renders the given voclist's page.
+    Renders the given voclist's tags page.
 
     :param voclist_id: The id of the voclist to render.
-    :return: The voclist page.
+    :return: The tags page.
     """
     voclist = Voclist.query.get(voclist_id)
 

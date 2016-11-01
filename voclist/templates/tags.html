@@ -14,14 +14,14 @@
     <div class="col-md-2"></div>
     <div class="col-md-8">
         <h3>Tags for {{ voclist }}</h3>
-        {% for tag in tags %}
-            {% if loop.index is divisibleby 3 %}
-                <div class="row">
-            {% endif %}
+        {% for tag_row in tags | batch(3, '&nbsp;') %}
+            <div class="row">
+                {% for tag in tag_row %}
                     <a class="col-md-4" href="/voclist/{{ voclist.id }}?tag={{ tag.value }}">{{ tag.value }}</a>
-            {% if loop.index is divisibleby 3 %}
-                </div>
-            {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No tag found.</p>
         {% endfor %}
     </div>
     <div class="col-md-2"></div>

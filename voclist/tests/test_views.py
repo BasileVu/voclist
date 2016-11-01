@@ -7,8 +7,7 @@ from voclist.tests.test_db import add_entry, add_tag, add_voclist
 __author__ = "Basile Vu <basile.vu@gmail.com>"
 
 
-class IndexViewTest(TestCase):
-
+class IndexViewTests(TestCase):
     def create_app(self):
         setup_app("config/test.cfg")
         db.create_all()
@@ -41,8 +40,7 @@ class IndexViewTest(TestCase):
         assert '<option voclist-id="1">a - b</option>' in str(r.data)
 
 
-class VoclistViewTest(TestCase):
-
+class VoclistViewTests(TestCase):
     def create_app(self):
         setup_app("config/test.cfg")
         db.create_all()
@@ -166,3 +164,42 @@ class VoclistViewTest(TestCase):
         assert "c1" not in data_str
         assert "c2" in data_str
         assert "c3" not in data_str
+
+
+class TagViewTests(TestCase):
+    def create_app(self):
+        setup_app("config/test.cfg")
+        db.create_all()
+        return app
+
+    def setUp(self):
+        db.create_all()
+        self.v = add_voclist("a", "b")
+        self.voclist_uri = "/voclist/%d" % self.v.id
+        self.tags_uri = self.voclist_uri + "/tags/"
+
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+
+    def test_breadcrumbs(self):
+        r = self.client.get(self.tags_uri)
+        self.assert200(r)
+        data_str = str(r.data)
+
+        assert '<ol class="breadcrumb">' in data_str
+        assert '<li class="active">Tags</li>' in data_str
+
+    def test_no_tag_existing(self):
+        r = self.client.get(self.tags_uri)
+        self.assert200(r)
+        assert '<p>No tag found.</p>' in str(r.data)
+
+    def test_tags_existing(self):
+        t = add_tag("test1")
+        add_entry("c", "d", self.v, t)
+
+        r = self.client.get(self.tags_uri)
+        self.assert200(r)
+
+        assert '<a class="col-md-4" href="%s?tag=%s">%s</a>' % (self.voclist_uri, t.value, t.value) in str(r.data)
